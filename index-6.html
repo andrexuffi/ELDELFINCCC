@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0b1a10">
+<title>El Delfín Golf Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--gold-l:#e8c97a;--gold-d:#8a6d28;
+  --green:#2d8a52;--green-l:#4CAF74;
+  --water:#1a5fa8;--bunker:#d4b896;--azure:#5ba3d4;--red:#c0392b;
+  --dorado:#d4a017;--dorado-l:#f0c040;
+}
+[data-theme="dark"]{
+  --bg:#0b1a10;--bg2:#0f2318;--surf:#1a3020;--surf2:#223828;
+  --brd:rgba(201,168,76,.18);--brd2:rgba(201,168,76,.32);
+  --txt:#f0ede6;--txt2:#a8c4b0;--txt3:#6a9a7a;
+  --card:linear-gradient(135deg,#132a1a,#0e1f13);
+  --inp-bg:#0f2318;
+}
+[data-theme="light"]{
+  --bg:#f0ede6;--bg2:#e8e4da;--surf:#fff;--surf2:#f5f2ea;
+  --brd:rgba(0,0,0,.1);--brd2:rgba(0,0,0,.2);
+  --txt:#1a2e1a;--txt2:#4a6a4a;--txt3:#7a9a7a;
+  --card:linear-gradient(135deg,#fff,#f5f2ea);
+  --inp-bg:#fff;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{font-size:16px;height:100%;}
+body{background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s;padding-bottom:16px;}
+button,input,select,textarea{font-family:'Outfit',sans-serif;}
+
+/* HEADER */
+header{background:linear-gradient(180deg,var(--bg2),rgba(15,35,24,.97));border-bottom:1.5px solid var(--brd2);padding:10px 14px;position:sticky;top:0;z-index:300;box-shadow:0 4px 24px rgba(0,0,0,.45);}
+.hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.hdr-logo{width:38px;height:38px;flex-shrink:0;}
+.hdr-txt .h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,4.5vw,1.3rem);font-weight:700;color:var(--gold-l);line-height:1.1;}
+.hdr-txt .sub{font-family:'JetBrains Mono',monospace;font-size:.48rem;color:var(--green-l);letter-spacing:.13em;text-transform:uppercase;margin-top:2px;}
+.hdr-right{margin-left:auto;display:flex;gap:7px;align-items:center;}
+.icon-btn{background:var(--surf);border:1px solid var(--brd);border-radius:9px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.92rem;transition:all .2s;color:var(--txt);flex-shrink:0;}
+.icon-btn:hover{border-color:var(--gold);}
+.wx-strip{display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:var(--surf);border-radius:10px;padding:6px 11px;border:1px solid var(--brd);min-height:40px;}
+.clock-box{background:rgba(201,168,76,.12);border:1px solid var(--brd2);border-radius:8px;padding:3px 9px;display:flex;flex-direction:column;align-items:center;min-width:88px;flex-shrink:0;}
+.clock-time{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--gold);letter-spacing:.03em;}
+.clock-date{font-family:'JetBrains Mono',monospace;font-size:.46rem;color:var(--txt3);}
+.wx-item{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--txt2);}
+.wx-item strong{color:var(--txt);}
+
+/* BOTTOM NAV */
+.bottom-nav{position:sticky;top:0;left:0;right:0;background:var(--bg2);border-bottom:1.5px solid var(--brd);display:flex;overflow-x:auto;overflow-y:hidden;z-index:250;box-shadow:0 2px 12px rgba(0,0,0,.3);-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.bottom-nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex:0 0 auto;min-width:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 6px 8px;cursor:pointer;border:none;background:transparent;color:var(--txt3);transition:all .2s;font-size:.42rem;letter-spacing:.06em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;gap:3px;min-height:52px;border-bottom:2px solid transparent;}
+.nav-btn .nb-icon{font-size:1.05rem;line-height:1;}
+.nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.nav-btn.active .nb-icon{filter:drop-shadow(0 0 6px rgba(201,168,76,.5));}
+
+/* PANELS */
+.panel{display:none;padding:14px;max-width:520px;margin:0 auto;}
+.panel.active{display:block;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--brd);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,.18);}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;color:var(--gold-l);margin-bottom:10px;letter-spacing:.03em;}
+.sec-label{font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;}
+
+/* FORMS */
+.finput{width:100%;background:var(--inp-bg);border:1px solid var(--brd);border-radius:9px;padding:10px 12px;color:var(--txt);font-size:.82rem;outline:none;transition:border .2s;}
+.finput:focus{border-color:var(--gold);}
+select.finput{cursor:pointer;}
+.flabel{font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px;}
+.fgroup{margin-bottom:12px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* BUTTONS */
+.pri-btn{width:100%;background:linear-gradient(135deg,var(--gold-l),var(--gold),var(--gold-d));color:#0b1a10;border:none;border-radius:12px;padding:13px;font-size:.82rem;font-weight:700;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:all .2s;font-family:'Outfit',sans-serif;box-shadow:0 3px 12px rgba(201,168,76,.25);}
+.pri-btn:hover{filter:brightness(1.1);}
+.sec-btn{background:var(--surf2);border:1px solid var(--brd);color:var(--txt2);border-radius:9px;padding:8px 14px;font-size:.76rem;cursor:pointer;transition:all .2s;}
+.sec-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ROUND BAR */
+.round-bar{display:flex;gap:8px;background:linear-gradient(135deg,var(--surf),var(--surf2));border:1px solid var(--brd2);border-radius:14px;padding:10px 12px;margin-bottom:12px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.rb-item{flex:1;min-width:60px;text-align:center;}
+.rb-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--gold-l);}
+.rb-lbl{font-family:'JetBrains Mono',monospace;font-size:.44rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+
+/* SCORECARD TABLE */
+.sc-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--brd);}
+.sc-table{width:100%;border-collapse:collapse;font-size:.68rem;}
+.sc-table th{background:var(--surf2);color:var(--txt3);font-family:'JetBrains Mono',monospace;font-size:.47rem;text-transform:uppercase;letter-spacing:.07em;padding:7px 5px;text-align:center;position:sticky;top:0;}
+.sc-table td{padding:6px 4px;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;}
+.sc-table tr.par3 td{background:rgba(26,95,168,.05);}
+.sc-table tr.par5 td{background:rgba(45,138,82,.05);}
+.sc-table tr.sub-r td{background:var(--surf2);font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;color:var(--gold);border-top:2px solid var(--brd2);}
+.sc-table tr.tot-r td{background:rgba(201,168,76,.1);font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:var(--gold-l);border-top:2px solid var(--brd2);}
+.score-inp{width:38px;height:34px;background:var(--inp-bg);border:2px solid var(--brd);border-radius:3px;color:var(--txt);font-size:.78rem;font-weight:700;text-align:center;font-family:'JetBrains Mono',monospace;outline:none;transition:all .15s;}
+/* EAGLE=verde oscuro, BIRDIE=verde, PAR=amarillo, BOGEY=naranja-rojo, DBL=rojo, TRP=rojo oscuro */
+.score-inp.eagle{border-radius:50%;border:2.5px solid #1a8a3a;box-shadow:0 0 0 3px var(--bg),0 0 0 5.5px #1a8a3a;background:rgba(26,138,58,.18);color:#2ecc71;}
+.score-inp.birdie{border-radius:50%;border:2.5px solid #27ae60;background:rgba(39,174,96,.15);color:#52d68a;}
+.score-inp.par-s{border-radius:3px;border:1px solid var(--brd);background:transparent;color:var(--txt);}
+.score-inp.bogey{border-radius:2px;border:2px solid #e67e22;background:rgba(230,126,34,.13);color:#e67e22;}
+.score-inp.dbl{border-radius:2px;border:2px solid #c0392b;box-shadow:0 0 0 3px var(--bg),0 0 0 5.5px #c0392b;background:rgba(192,57,43,.15);color:#e74c3c;}
+.score-inp.trp{border-radius:2px;border:2.5px solid #8b0000;background:rgba(139,0,0,.2);color:#c0392b;}
+
+/* STATS INPUTS */
+.stat-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;padding:4px 6px;background:var(--surf2);border-radius:8px;}
+.stat-lbl{font-size:.65rem;color:var(--txt2);flex:1;}
+.stat-check{width:22px;height:22px;accent-color:var(--green-l);cursor:pointer;flex-shrink:0;}
+.putts-inp{width:48px;height:28px;background:var(--inp-bg);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-size:.75rem;text-align:center;font-family:'JetBrains Mono',monospace;outline:none;}
+.stat-pct{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--gold);min-width:38px;text-align:right;}
+
+/* HOLE DETAIL */
+.hole-detail{background:var(--surf);border:1px solid var(--brd);border-radius:12px;padding:12px;margin-bottom:12px;}
+.hd-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.hd-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--gold);line-height:1;}
+.hd-par{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--txt3);}
+.hd-si{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--azure);}
+.hcp-tabs{display:flex;gap:5px;margin-bottom:8px;}
+.hcp-tab{flex:1;padding:6px 4px;border:1px solid var(--brd);border-radius:8px;background:transparent;color:var(--txt3);font-size:.62rem;cursor:pointer;text-align:center;font-family:'JetBrains Mono',monospace;transition:all .2s;}
+.hcp-tab.act{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold-l);}
+.hcp-text{font-size:.77rem;color:var(--txt2);line-height:1.6;min-height:50px;}
+
+/* PLAYERS */
+.player-card{background:var(--surf);border:1px solid var(--brd);border-radius:12px;padding:10px 12px;margin-bottom:8px;}
+.pc-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.pc-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono',monospace;}
+.pc-name{font-weight:600;font-size:.85rem;flex:1;}
+.pc-tee{font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--txt3);}
+.pc-scores{display:flex;gap:3px;flex-wrap:wrap;}
+.pc-sc{width:26px;height:24px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;border:1.5px solid transparent;border-radius:2px;}
+.pc-sc.e{border-radius:50%;border:1.5px solid #1a8a3a;box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px #1a8a3a;color:#2ecc71;background:rgba(26,138,58,.18);}
+.pc-sc.b{border-radius:50%;border:1.5px solid #27ae60;color:#52d68a;background:rgba(39,174,96,.15);}
+.pc-sc.p{border-radius:2px;border:1px solid var(--brd);color:var(--txt);background:transparent;}
+.pc-sc.bg{border-radius:2px;border:1.5px solid #e67e22;color:#e67e22;background:rgba(230,126,34,.13);}
+.pc-sc.db{border-radius:2px;border:1.5px solid #c0392b;box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px #c0392b;color:#e74c3c;background:rgba(192,57,43,.15);}
+.pc-sc.tp{border-radius:2px;border:1.5px solid #8b0000;color:#c0392b;background:rgba(139,0,0,.2);}
+.pc-sc.em{background:transparent;color:var(--txt3);border:none;}
+.pc-total{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:700;color:var(--gold);}
+.add-player-btn{width:100%;border:2px dashed var(--brd);border-radius:12px;padding:12px;background:transparent;color:var(--txt3);font-size:.8rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.add-player-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* HISTORY */
+.hist-entry{background:var(--surf);border:1px solid var(--brd);border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer;transition:all .2s;}
+.hist-entry:hover{border-color:var(--gold);}
+.he-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.he-score{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--gold);}
+.he-diff{font-family:'JetBrains Mono',monospace;font-size:.65rem;}
+.he-meta{font-size:.7rem;color:var(--txt3);}
+.he-del{background:transparent;border:none;color:var(--txt3);cursor:pointer;font-size:.8rem;padding:4px 8px;border-radius:6px;transition:all .2s;}
+.he-del:hover{color:#e74c3c;background:rgba(192,57,43,.1);}
+
+/* CLUBS */
+.club-row{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--brd);transition:background .2s;}
+.club-row:hover{background:var(--surf2);}
+.club-row:last-child{border-bottom:none;}
+.club-name{font-size:.8rem;font-weight:600;flex:1;}
+.club-avg{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--txt3);width:50px;text-align:center;}
+.club-mine{width:64px;}
+.club-mine .finput{padding:6px 8px;font-size:.74rem;font-family:'JetBrains Mono',monospace;text-align:center;}
+.club-tip{font-size:.62rem;color:var(--txt3);line-height:1.4;padding:6px 12px 10px;border-bottom:1px solid var(--brd);background:rgba(201,168,76,.03);}
+
+/* GAMES */
+.game-card{background:var(--surf);border:1px solid var(--brd);border-radius:14px;margin-bottom:10px;overflow:hidden;}
+.game-header{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;cursor:pointer;}
+.game-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--gold-l);}
+.game-badge{font-family:'JetBrains Mono',monospace;font-size:.45rem;padding:3px 8px;border-radius:99px;background:rgba(201,168,76,.15);color:var(--gold);text-transform:uppercase;letter-spacing:.1em;}
+.game-body{padding:0 14px 14px;font-size:.78rem;color:var(--txt2);line-height:1.65;display:none;}
+.game-body.open{display:block;}
+.game-body h4{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin:10px 0 4px;}
+.game-body ul{padding-left:16px;}
+.game-body ul li{margin-bottom:3px;}
+.game-players{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--azure);}
+
+/* RULES */
+.rule-item{padding:10px 0;border-bottom:1px solid var(--brd);}
+.rule-item:last-child{border-bottom:none;}
+.rule-num{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;}
+.rule-title{font-size:.83rem;font-weight:600;color:var(--txt);margin:2px 0;}
+.rule-body{font-size:.75rem;color:var(--txt2);line-height:1.6;}
+
+/* MAPS / HOYOS */
+.hole-nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.h-btn{padding:6px 10px;border:1px solid var(--brd);border-radius:8px;background:transparent;color:var(--txt3);font-family:'JetBrains Mono',monospace;font-size:.6rem;cursor:pointer;transition:all .2s;}
+.h-btn.act{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold-l);}
+.hole-svg{width:100%;max-width:360px;display:block;margin:0 auto;border-radius:10px;border:1px solid var(--brd);}
+.hz-list{margin-top:10px;}
+.hz-chip{display:inline-flex;align-items:center;gap:5px;font-size:.67rem;padding:4px 8px;border-radius:99px;margin:3px;border:1px solid transparent;}
+
+/* INFO */
+.price-block{background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.04));border:1px solid var(--brd2);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;}
+.price-lbl{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.1em;}
+.price-amt{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--gold-l);}
+.div-v{width:1px;height:44px;background:var(--brd2);flex-shrink:0;}
+.ftags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.ftag{padding:4px 10px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.52rem;border:1px solid;}
+
+/* HCP */
+.result-box{background:rgba(201,168,76,.07);border:1px solid var(--brd2);border-radius:10px;padding:12px;margin-top:10px;font-size:.78rem;color:var(--txt2);line-height:1.7;display:none;}
+.si-table{width:100%;border-collapse:collapse;font-size:.62rem;font-family:'JetBrains Mono',monospace;}
+.si-table td,.si-table th{padding:4px 6px;text-align:center;border-bottom:1px solid var(--brd);}
+.si-table th{color:var(--txt3);font-size:.5rem;text-transform:uppercase;}
+.si-highlight{background:rgba(201,168,76,.15);color:var(--gold-l)!important;}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surf2);border:1px solid var(--gold);color:var(--txt);padding:10px 20px;border-radius:99px;font-size:.78rem;z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;font-family:'JetBrains Mono',monospace;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* MAP VIEW */
+.v-btns{display:flex;gap:6px;margin-bottom:10px;}
+.v-btn{flex:1;padding:8px;border:1px solid var(--brd);border-radius:9px;background:transparent;color:var(--txt3);font-family:'JetBrains Mono',monospace;font-size:.62rem;cursor:pointer;transition:all .2s;}
+.v-btn.act{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--bg2);border:1px solid var(--brd2);border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--gold-l);margin-bottom:14px;}
+.modal-close{float:right;background:transparent;border:none;color:var(--txt3);font-size:1.2rem;cursor:pointer;margin-top:-4px;}
+
+/* STATS SUMMARY */
+.stat-bar-row{margin-bottom:8px;}
+.stat-bar-lbl{display:flex;justify-content:space-between;font-size:.7rem;color:var(--txt2);margin-bottom:3px;}
+.stat-bar-lbl span:last-child{color:var(--gold);font-family:'JetBrains Mono',monospace;}
+.stat-bar-bg{background:var(--surf2);border-radius:99px;height:6px;}
+.stat-bar-fill{height:6px;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--green-l));transition:width .6s;}
+
+/* CHRONO */
+.chrono-box{background:rgba(76,175,116,.1);border:1px solid rgba(76,175,116,.3);border-radius:8px;padding:4px 10px;display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.chrono-time{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:var(--green-l);letter-spacing:.04em;}
+.chrono-btn{background:rgba(76,175,116,.15);border:1px solid rgba(76,175,116,.3);border-radius:5px;color:var(--green-l);font-size:.6rem;padding:2px 7px;cursor:pointer;transition:all .2s;}
+.chrono-btn:hover{background:rgba(76,175,116,.3);}
+.chrono-running .chrono-time{color:#f0c040;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* ACTIVE PLAYER BAR */
+.active-player-bar{display:flex;align-items:center;gap:8px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:7px 12px;margin-bottom:10px;}
+.apb-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.apb-name{font-weight:600;font-size:.82rem;flex:1;}
+.apb-hint{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--txt3);}
+
+/* PLAYER CARD enhanced */
+.player-card{background:var(--surf);border:1.5px solid var(--brd);border-radius:14px;padding:11px 13px;margin-bottom:8px;cursor:pointer;transition:all .25s;}
+.player-card:hover,.player-card.selected{border-color:var(--gold);background:rgba(201,168,76,.05);}
+.player-card.selected{box-shadow:0 0 0 1px var(--gold);}
+
+/* NAV visual polish */
+.nav-btn{position:relative;}
+.nav-btn.active::after{content:'';position:absolute;bottom:0;left:15%;right:15%;height:2.5px;background:linear-gradient(90deg,transparent,var(--gold),transparent);border-radius:2px 2px 0 0;}
+
+@media(max-width:360px){
+  .g2{grid-template-columns:1fr;}
+  .panel{padding:10px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <svg class="hdr-logo" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="19" cy="19" r="18" fill="#0f2318" stroke="#c9a84c" stroke-width="1.2"/>
+      <ellipse cx="19" cy="21" rx="10" ry="7" fill="#1a5fa8" opacity=".6"/>
+      <path d="M19 22 Q22 16 19 8" stroke="#c9a84c" stroke-width="1.4" fill="none"/>
+      <polygon points="19,8 23,13 19,12" fill="#c0392b"/>
+      <circle cx="16" cy="22" r="2.5" fill="#2d8a52"/>
+      <circle cx="22" cy="21" r="2" fill="#2d8a52"/>
+    </svg>
+    <div class="hdr-txt">
+      <div class="h1">El Delfín Golf Club</div>
+      <div class="sub">Campeche Country Club · Par 72 <span style="background:var(--gold);color:#0b1a10;font-family:'JetBrains Mono',monospace;font-size:.42rem;font-weight:700;padding:1px 5px;border-radius:5px;letter-spacing:.08em;vertical-align:middle;">v4.1</span></div>
+    </div>
+    <div class="hdr-right">
+      <button class="icon-btn" onclick="toggleTheme()" title="Tema">🌙</button>
+    </div>
+  </div>
+  <div class="wx-strip">
+    <div class="chrono-box" id="chrono-box">
+      <div class="chrono-time" id="chrono-time">00:00:00</div>
+      <div style="display:flex;gap:4px;margin-top:3px;">
+        <button class="chrono-btn" id="chrono-start" onclick="chronoToggle()">▶</button>
+        <button class="chrono-btn" onclick="chronoReset()">↺</button>
+      </div>
+    </div>
+    <div class="clock-box">
+      <div class="clock-time" id="clock-time">--:--:--</div>
+      <div class="clock-date" id="clock-date">---</div>
+    </div>
+    <span id="wx-placeholder" class="wx-item" style="color:var(--txt3);font-size:.62rem;">⏳ Cargando clima...</span>
+  </div>
+</header>
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="showTab('ronda',this)" id="nav-ronda">
+    <span class="nb-icon">⛳</span>Mi Ronda
+  </button>
+  <button class="nav-btn" onclick="showTab('historial',this)">
+    <span class="nb-icon">📚</span>Historial
+  </button>
+  <button class="nav-btn" onclick="showTab('hoyos',this)">
+    <span class="nb-icon">🗺️</span>Hoyos
+  </button>
+  <button class="nav-btn" onclick="showTab('bastones',this)">
+    <span class="nb-icon">🏌️</span>Bastones
+  </button>
+  <button class="nav-btn" onclick="showTab('juegos',this)">
+    <span class="nb-icon">🎮</span>Juegos
+  </button>
+  <button class="nav-btn" onclick="showTab('reglas',this)">
+    <span class="nb-icon">📖</span>Reglas
+  </button>
+  <button class="nav-btn" onclick="showTab('info',this)">
+    <span class="nb-icon">ℹ️</span>Info
+  </button>
+</nav>
+
+<!-- PANELS -->
+<div id="panel-ronda" class="panel active">
+  <!-- Active Player Indicator -->
+  <div id="active-player-bar" style="display:none" class="active-player-bar">
+    <div class="apb-dot" id="apb-dot"></div>
+    <div>
+      <div class="apb-name" id="apb-name">Jugador</div>
+      <div class="apb-hint">Anotando para este jugador · Toca "Yo" para volver a tu tarjeta</div>
+    </div>
+    <button class="sec-btn" onclick="switchToMyCard()" style="font-size:.6rem;padding:5px 10px;flex-shrink:0">Yo ⛳</button>
+  </div>
+  <!-- Round Bar -->
+  <div class="round-bar">
+    <div class="rb-item"><div class="rb-val" id="rb-total">—</div><div class="rb-lbl">Total</div></div>
+    <div class="rb-item"><div class="rb-val" id="rb-par">—</div><div class="rb-lbl">vs PAR</div></div>
+    <div class="rb-item"><div class="rb-val" id="rb-out">—</div><div class="rb-lbl">OUT</div></div>
+    <div class="rb-item"><div class="rb-val" id="rb-in">—</div><div class="rb-lbl">IN</div></div>
+    <div class="rb-item"><div class="rb-val" id="rb-putts">—</div><div class="rb-lbl">Putts</div></div>
+  </div>
+
+  <!-- Stats Summary -->
+  <div class="card" id="stats-summary" style="display:none">
+    <div class="card-title">📊 Estadísticas de Ronda</div>
+    <div class="stat-bar-row"><div class="stat-bar-lbl"><span>Fairways en Regulación</span><span id="fir-pct">0%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill" id="fir-bar" style="width:0%"></div></div></div>
+    <div class="stat-bar-row"><div class="stat-bar-lbl"><span>Greens en Regulación</span><span id="gir-pct">0%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill" id="gir-bar" style="width:0%"></div></div></div>
+    <div class="stat-bar-row"><div class="stat-bar-lbl"><span>Promedio de Putts/Hoyo</span><span id="putt-avg">—</span></div><div class="stat-bar-bg"><div class="stat-bar-fill" id="putt-bar" style="width:0%;background:linear-gradient(90deg,var(--azure),#5ba3d4)"></div></div></div>
+  </div>
+
+  <!-- Scorecard -->
+  <div class="card" style="padding:10px 6px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 6px;">
+      <div class="card-title" style="margin:0">📋 Scorecard</div>
+      <div style="display:flex;gap:5px;">
+        <button class="sec-btn" onclick="resetScores()" style="font-size:.62rem;padding:5px 10px;">🔄 Limpiar</button>
+        <button class="sec-btn" onclick="openSaveModal()" style="font-size:.62rem;padding:5px 10px;color:var(--green-l);border-color:var(--green);">💾 Guardar</button>
+      </div>
+    </div>
+    <div class="sc-wrap"><table class="sc-table">
+      <thead><tr><th>H.</th><th>PAR</th><th>NGR</th><th>AZL</th><th>BLC</th><th style="color:var(--dorado-l)">DRD</th><th>RJO</th><th>SI</th><th>Score</th><th>FIR</th><th>GIR</th><th>Putts</th></tr></thead>
+      <tbody id="sc-body"></tbody>
+    </table></div>
+  </div>
+
+  <!-- Hole Detail -->
+  <div class="hole-detail" id="hole-detail" style="display:none">
+    <div class="hd-header">
+      <div>
+        <div class="hd-num" id="hd-num">H.1</div>
+        <div class="hd-par" id="hd-par">Par 5 · 503 yds</div>
+        <div class="hd-si" id="hd-si">S.I. 7</div>
+      </div>
+      <div id="hd-svg"></div>
+    </div>
+    <div class="hcp-tabs">
+      <button class="hcp-tab" onclick="setHcp('scratch',this)">🏆 Scratch</button>
+      <button class="hcp-tab act" onclick="setHcp('mid',this)">⛳ Medio</button>
+      <button class="hcp-tab" onclick="setHcp('high',this)">🌱 Alto</button>
+    </div>
+    <div class="hcp-text" id="hcp-text"></div>
+    <div class="hz-list" id="hz-list"></div>
+  </div>
+
+  <!-- Players -->
+  <div class="card">
+    <div class="card-title">👥 Jugadores en la Ronda</div>
+    <div id="players-list"></div>
+    <button class="add-player-btn" onclick="openAddPlayer()">＋ Agregar Jugador</button>
+  </div>
+</div>
+
+<!-- HISTORIAL -->
+<div id="panel-historial" class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold-l)">📚 Historial de Rondas</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--txt3)" id="hist-count">0 rondas</div>
+  </div>
+  <div id="hist-list"></div>
+</div>
+
+<!-- HOYOS -->
+<div id="panel-hoyos" class="panel">
+  <div class="hole-nav" id="hole-nav-btns"></div>
+  <div id="hole-view-content"></div>
+</div>
+
+<!-- BASTONES -->
+<div id="panel-bastones" class="panel">
+  <div class="card">
+    <div class="card-title">🏌️ Mis Yardajes por Bastón</div>
+    <p style="font-size:.75rem;color:var(--txt3);margin-bottom:12px">Ingresa tus yardajes reales. Se guardan automáticamente en tu dispositivo.</p>
+    <div style="background:var(--surf2);border-radius:12px;overflow:hidden;border:1px solid var(--brd);">
+      <div style="display:grid;grid-template-columns:1fr 62px 62px 70px;background:var(--surf2);padding:7px 12px;border-bottom:1px solid var(--brd);">
+        <div class="flabel" style="margin:0">Bastón</div>
+        <div class="flabel" style="margin:0;text-align:center">PGA</div>
+        <div class="flabel" style="margin:0;text-align:center">Amateur</div>
+        <div class="flabel" style="margin:0;text-align:center">El mío</div>
+      </div>
+      <div id="clubs-list"></div>
+    </div>
+    <button class="pri-btn" onclick="saveClubs()" style="margin-top:12px;">💾 GUARDAR MIS YARDAJES</button>
+  </div>
+  <div id="clubs-tips-card" class="card">
+    <div class="card-title">💡 Recomendaciones por Bastón</div>
+    <div id="clubs-tips-content" style="font-size:.76rem;color:var(--txt2);line-height:1.65;"></div>
+  </div>
+</div>
+
+<!-- JUEGOS -->
+<div id="panel-juegos" class="panel">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold-l);margin-bottom:12px;">🎮 Juegos y Formatos de Golf</div>
+  <div id="games-list"></div>
+</div>
+
+<!-- REGLAS -->
+<div id="panel-reglas" class="panel">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold-l);margin-bottom:4px;">📖 30 Reglas Esenciales</div>
+  <p style="font-size:.7rem;color:var(--txt3);margin-bottom:14px;">Basadas en las Reglas de Golf USGA/R&A 2023</p>
+  <div class="card" style="padding:10px 14px;"><div id="rules-list"></div></div>
+</div>
+
+<!-- INFO -->
+<div id="panel-info" class="panel">
+  <div class="price-block">
+    <div>
+      <div class="price-lbl">Green Fee + Carro · Local</div>
+      <div class="price-amt">$2,300</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.47rem;color:var(--gold);margin-top:1px;">MXN</div>
+    </div>
+    <div class="div-v"></div>
+    <div style="font-size:.75rem;color:var(--txt2);line-height:1.5;">
+      <strong style="color:var(--gold-l)">$2,875 MXN</strong> — Precio general<br>
+      Incluye carro de golf para 2 jugadores<br>
+      Mar – Dom · 07:00 – 18:00 hrs
+    </div>
+  </div>
+  <div class="card"><div class="card-title">Sobre El Campo</div><p style="font-size:.77rem;color:var(--txt2);line-height:1.55">Diseñado por <strong style="color:var(--gold-l)">Greg Letsche</strong> (colaborador de Nicklaus y Els). Par 72 · Rating 74.7 · Slope 144. Bermuda 4/19 en fairways · Tiff Eagle en greens. 88 hectáreas con vista a la bahía de Campeche. Sede del Torneo Nacional Amateur. Inaugurado 2010, renovado 2017.</p></div>
+  <div class="g2" style="margin-bottom:10px;">
+    <div class="card"><div class="card-title">1ª Vuelta</div><p style="font-size:.77rem;color:var(--txt2);line-height:1.6">Hoyos 1–9 · Par <strong style="color:var(--gold)">37</strong><br>Negro: <strong style="color:var(--gold)">3,309 yds</strong><br>3 par 5 · 4 par 4 · 2 par 3</p></div>
+    <div class="card"><div class="card-title">2ª Vuelta</div><p style="font-size:.77rem;color:var(--txt2);line-height:1.6">Hoyos 10–18 · Par <strong style="color:var(--gold)">35</strong><br>Negro: <strong style="color:var(--gold)">3,179 yds</strong><br>1 par 5 · 6 par 4 · 2 par 3</p></div>
+  </div>
+  <div class="card"><div class="card-title">Hazards Principales</div><p style="font-size:.77rem;color:var(--txt2);line-height:1.55"><strong style="color:#6abce8">2 Lagos</strong> (h.9, h.12, h.17) · <strong style="color:#6abce8">Cascada</strong> (h.12) · <strong style="color:var(--bunker)">Búnkers de green</strong> en h.2,5,8,11,14,16 · Rough de selva tropical en todos los hoyos · Viento de bahía dominante en h.6 y h.15</p></div>
+  <div class="card"><div class="card-title">Salidas Disponibles</div>
+    <div class="ftags">
+      <span class="ftag" style="border-color:#555;color:#bbb">⚫ Negro 6,488 yds · Rating 74.7 · Slope 144</span>
+      <span class="ftag" style="border-color:#1e6fa8;color:#5ba3d4">🔵 Azul ~6,100 yds</span>
+      <span class="ftag" style="border-color:#aaa;color:#ccc">⚪ Blanco ~5,600 yds</span>
+      <span class="ftag" style="border-color:#d4a017;color:#f0c040">🟡 Dorado ~5,100 yds</span>
+      <span class="ftag" style="border-color:#c0392b;color:#e74c3c">🔴 Rojo ~4,500 yds</span>
+    </div>
+  </div>
+  <div class="card"><div class="card-title">Contacto</div>
+    <p style="font-size:.77rem;color:var(--txt2);line-height:1.8">📍 Carretera Campeche–Lerma Km 1, C.P. 24500<br>📞 (981) 127-1035 / (981) 160-5649<br>📅 Martes a Domingo · 07:00 – 18:00 hrs</p>
+  </div>
+  <!-- HCP -->
+  <div class="card"><div class="card-title">Calculadora de Hándicap (WHS)</div>
+    <div class="g2">
+      <div class="fgroup"><label class="flabel">Score Bruto</label><input class="finput" id="hcp-score" type="number" min="60" max="160" placeholder="Ej: 92" inputmode="numeric"></div>
+      <div class="fgroup"><label class="flabel">Salida</label>
+        <select class="finput" id="hcp-tee">
+          <option value="negro">⚫ Negro R:74.7 S:144</option>
+          <option value="azul">🔵 Azul R:72.1 S:138</option>
+          <option value="blanco">⚪ Blanco R:69.8 S:131</option>
+          <option value="dorado">🟡 Dorado R:67.2 S:123</option>
+          <option value="rojo">🔴 Rojo R:64.0 S:114</option>
+        </select>
+      </div>
+    </div>
+    <div class="fgroup"><label class="flabel">Rondas para el Índice</label>
+      <select class="finput" id="hcp-rounds">
+        <option value="1">1 ronda</option>
+        <option value="3">3 rondas (promedio)</option>
+        <option value="5" selected>5 rondas (mejor 3 de 5)</option>
+        <option value="10">10 rondas (mejor 5 de 10)</option>
+        <option value="20">20 rondas (mejor 10 de 20)</option>
+      </select>
+    </div>
+    <button class="pri-btn" onclick="calcHcp()">CALCULAR ÍNDICE</button>
+    <div class="result-box" id="hcp-result"></div>
+  </div>
+</div>
+
+
+
+<!-- MODAL: Save Score -->
+<div class="modal-overlay" id="modal-save">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-save')">✕</button>
+    <div class="modal-title">💾 Guardar Score</div>
+    <div class="fgroup"><label class="flabel">Nombre del jugador</label><input class="finput" id="save-name" placeholder="Tu nombre"></div>
+    <div class="fgroup"><label class="flabel">Salida jugada</label>
+      <select class="finput" id="save-tee">
+        <option value="negro">⚫ Negro</option>
+        <option value="azul">🔵 Azul</option>
+        <option value="blanco">⚪ Blanco</option>
+        <option value="dorado">🟡 Dorado</option>
+        <option value="rojo">🔴 Rojo</option>
+      </select>
+    </div>
+    <div class="fgroup"><label class="flabel">Notas (opcional)</label><input class="finput" id="save-notes" placeholder="Condiciones, clima, etc."></div>
+    <div id="save-msg" style="font-size:.73rem;margin-bottom:8px;font-family:'JetBrains Mono',monospace;"></div>
+    <button class="pri-btn" onclick="saveScore()">💾 GUARDAR RONDA</button>
+  </div>
+</div>
+
+<!-- MODAL: Add Player -->
+<div class="modal-overlay" id="modal-player">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-player')">✕</button>
+    <div class="modal-title">👤 Agregar Jugador</div>
+    <div class="fgroup"><label class="flabel">Nombre</label><input class="finput" id="player-name" placeholder="Nombre del jugador"></div>
+    <div class="fgroup"><label class="flabel">Salida</label>
+      <select class="finput" id="player-tee">
+        <option value="negro">⚫ Negro</option>
+        <option value="azul">🔵 Azul</option>
+        <option value="blanco">⚪ Blanco</option>
+        <option value="dorado">🟡 Dorado</option>
+        <option value="rojo">🔴 Rojo</option>
+      </select>
+    </div>
+    <div class="fgroup"><label class="flabel">Color identificador</label>
+      <select class="finput" id="player-color">
+        <option value="#c9a84c">🟡 Dorado</option>
+        <option value="#4CAF74">🟢 Verde</option>
+        <option value="#5ba3d4">🔵 Azul</option>
+        <option value="#e74c3c">🔴 Rojo</option>
+        <option value="#a78bfa">🟣 Morado</option>
+        <option value="#f97316">🟠 Naranja</option>
+      </select>
+    </div>
+    <button class="pri-btn" onclick="addPlayer()">AGREGAR</button>
+  </div>
+</div>
+
+<!-- MODAL: Historial Detail -->
+<div class="modal-overlay" id="modal-hist" style="align-items:flex-start;">
+  <div class="modal-box" style="border-radius:0;max-height:100vh;height:100%;max-width:100%;padding:16px 14px;">
+    <button class="modal-close" onclick="closeModal('modal-hist')">✕</button>
+    <div class="modal-title" id="modal-hist-title">Ronda</div>
+    <div id="modal-hist-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════════
+   DATA
+════════════════════════════════════════════════ */
+const holes=[
+  {n:1,par:5,negro:503,azul:475,blanco:455,dorado:420,rojo:380,si:7,water:false,bG:false,bF:true,casc:false,ws:'',r:'straight',
+   hz:[{t:'Búnker de fairway derecho (~230 yds)',c:'#d4b896'},{t:'Rough de selva tropical lateral',c:'#2d6020'}],
+   hcp:{
+     scratch:'Par 5 de apertura — oportunidad de eagle. Con el viento a favor, el 2do tiro con maderas de fairway (3W o 5W) puede dejarte a 80-100 yds del pin. Evita el búnker de fairway a 230 yds tirando con draw o alineando ligeramente a la izquierda. El green se abre desde la izquierda: wedge con spin reverso atacando al pin. Ataca el birdie aquí.',
+     mid:'Driver al centro-izquierda, lejos del búnker derecho a 230 yds. 2do tiro con 5-hierro o híbrido al área de ~100 yds. Desde ahí, un wedge de 100 yds al centro del green te pone en posición de birdie. Par es excelente, bogey inaceptable en este hoyo.',
+     high:'Driver suave al centro para evitar el búnker. 2do tiro con hierro largo hacia la calle a unos 100 yds del green. En el tercer tiro usa un wedge y apunta al centro del green — no corras riesgos en el primer hoyo. Bogey es un buen comienzo.'
+   },
+   info:'Par 5 de apertura con calle amplia. El búnker de fairway derecho penaliza los drives que se cierran. Green abierto al approach desde la izquierda.'},
+  {n:2,par:4,negro:343,azul:320,blanco:298,dorado:275,rojo:248,si:13,water:false,bG:true,bF:false,casc:false,ws:'',r:'dogleg-right',
+   hz:[{t:'2 Búnkers de green (izq. y der.)',c:'#d4b896'},{t:'Rough lateral de selva',c:'#2d6020'}],
+   hcp:{
+     scratch:'Dogleg a la derecha: el driver largo puede pasarse de la calle. Usa hierro 3 o 4 para quedarte en la posición perfecta (~120-130 yds). El green tiene búnkers a ambos lados — ataca la bandera solo si está en el centro. Con bandera lateral, apunta al lado opuesto del búnker más cercano.',
+     mid:'Hierro largo o híbrido desde el tee para controlar la dirección. Approach con wedge o 9-hierro: la clave es apuntar al CENTRO del green entre los dos búnkers. Si la bandera está en el medio, atácala. Si está lateral, juega al centro.',
+     high:'No necesitas driver aquí — 5-hierro o híbrido te deja en buena posición. El green tiene búnkers a ambos lados pero la zona central es generosa. Pitching wedge al centro, no al pin. Par o bogey es excelente resultado.'
+   },
+   info:'Dogleg suave a la derecha. Búnkers de green obligan a precisión en el approach.'},
+  {n:3,par:4,negro:377,azul:352,blanco:328,dorado:300,rojo:268,si:9,water:false,bG:false,bF:true,casc:false,ws:'',r:'slight-left',
+   hz:[{t:'Búnker de fairway centro-izquierdo',c:'#d4b896'},{t:'Vegetación densa derecha',c:'#2d6020'}],
+   hcp:{
+     scratch:'El búnker de fairway está a ~220 yds al centro-izquierda: driver con fade o alineación a la derecha lo evita perfectamente y te da el mejor ángulo al green. El green tiene pendiente de atrás hacia adelante — approach corto mejor que largo. Con bandera atrás: 2 palos extra.',
+     mid:'Driver al centro-derecha para evitar el búnker izquierdo a 220 yds. El approach con 6-7 hierro al centro del green. Cuidado con quedarse largo — la pendiente de atrás hacia adelante complica los putts. Busca el lado frontal del green.',
+     high:'Driver suave al centro-derecha. El búnker izquierdo a 220 yds es tu referencia para alinear. Approach con 8-9 hierro — siempre al centro. La pendiente de atrás hacia adelante convierte los tres-putts en el mayor enemigo. Bogey aceptable.'
+   },
+   info:'Par 4 con tendencia izquierda. El búnker de fairway penaliza tiros cerrados. Green con pendiente de atrás hacia adelante.'},
+  {n:4,par:3,negro:141,azul:128,blanco:118,dorado:105,rojo:90,si:11,water:false,bG:false,bF:false,casc:false,ws:'',r:'straight',
+   hz:[{t:'Rough pronunciado alrededor del green',c:'#2d6020'},{t:'Pendiente del terreno',c:'#5a8060'}],
+   hcp:{
+     scratch:'Par 3 corto — debe ser birdie o par. Evalúa el viento con exactitud: hasta ±1 palo de diferencia. Con viento cero: 8-hierro típico. El green tiene pendiente — lee la superficie antes de elegir el lado de ataque. Si el pin está en el lado de la pendiente alta, sobrepasa ligeramente.',
+     mid:'7 u 8 hierro al centro del green. No ataques banderas en los bordes — el rough alrededor penaliza mucho. Con viento en contra suma un palo. El putt desde el centro es siempre manejable. Bogey máximo tolerado en este hoyo.',
+     high:'Hierro medio o 6-hierro al centro del green. La distancia es corta pero el rough alrededor castiga. Prefiere llegar al centro aunque sea con un putt largo a quedar en rough. Este hoyo es tu oportunidad de par o birdie con calma.'
+   },
+   info:'Par 3 corto con terreno ondulado. El rough penaliza las salidas de green. La lectura del putt es clave.'},
+  {n:5,par:4,negro:407,azul:382,blanco:356,dorado:325,rojo:290,si:1,water:false,bG:true,bF:true,casc:false,ws:'',r:'dogleg-left',
+   hz:[{t:'Búnker de fairway derecho — penalizador',c:'#d4b896'},{t:'2 Búnkers de green frontales',c:'#d4b896'},{t:'Rough de selva ambos lados',c:'#2d6020'},{t:'Dogleg izquierdo con cuesta',c:'#5a8060'}],
+   hcp:{
+     scratch:'El hoyo más difícil (S.I. 1). Dogleg izquierdo: el driver ideal debe cortar la esquina con draw controlado. El green está ELEVADO — toma al menos 2 palos extra para el approach (si normalmente usarías un 7-hierro, usa un 5). Los búnkers frontales castigan quedarse corto. Par aquí equivale a un birdie en cualquier otro hoyo.',
+     mid:'Driver al centro-izquierda cortando el dogleg. El approach al green cuesta arriba exige al menos 1-2 palos extra. Si no llegas cómodo al green, haz layup a ~60 yds y pitch al centro. Bogey es un resultado excelente en el hoyo más difícil del campo.',
+     high:'Paciencia total. Driver al centro sin intentar cortar la esquina. Layup al área de 100 yds del green. El tercer tiro con wedge al centro — no a la bandera si está detrás de los búnkers frontales. Doble bogey como límite.'
+   },
+   info:'El hoyo más difícil. Dogleg izquierdo con green elevado y búnkers frontales y de fairway.'},
+  {n:6,par:3,negro:186,azul:172,blanco:158,dorado:140,rojo:120,si:5,water:false,bG:false,bF:false,casc:false,ws:'',r:'straight',
+   hz:[{t:'Viento variable de la bahía de Campeche',c:'#6abce8'},{t:'Pendiente significativa del green',c:'#5a8060'},{t:'Rough lateral pronunciado',c:'#2d6020'}],
+   hcp:{
+     scratch:'El viento de la bahía puede cambiar completamente el palo — hasta ±2 palos. Con viento en contra: 4-hierro o híbrido. A favor: 8-hierro. Antes de pararte en el tee, lanza un poco de hierba al aire para medir. El green tiene pendiente pronunciada — quedarse CORTO es mejor que pasarse largo.',
+     mid:'Siempre suma 1 palo por defecto en este hoyo. Si normalmente usarías un 6-hierro, usa un 5-hierro. El viento de la bahía lleva la bola. Apunta al centro-frontal del green: desde ahí el putt cuesta arriba es manejable. Bogey es buen resultado.',
+     high:'Hierro largo o híbrido al centro del green. El viento es el factor dominante aquí — no confíes en tu cálculo de distancia habitual. Llegar al green independientemente del putt ya es excelente. Bogey o doble con dignidad.'
+   },
+   info:'Par 3 expuesto al viento dominante de la bahía. La lectura del viento determina completamente el palo.'},
+  {n:7,par:5,negro:472,azul:445,blanco:416,dorado:385,rojo:345,si:17,water:false,bG:false,bF:false,casc:false,ws:'',r:'dogleg-right',
+   hz:[{t:'Rough de selva izquierdo',c:'#2d6020'},{t:'Terreno desnivelado en el 2do tiro',c:'#5a8060'}],
+   hcp:{
+     scratch:'S.I. 17 — par 5 más accesible, oportunidad real de eagle. El descenso del terreno da yardaje extra al driver. 2do tiro con madera 3: si conectas, puedes llegar al green en dos. Desde el rough derecho el angle al green se cierra — mantente en la calle a toda costa.',
+     mid:'Birdie objetivo. Driver, 2do tiro con híbrido o hierro largo ~150 yds del green, wedge. El descenso ayuda. El green es relativamente abierto. Apunta ligeramente a la izquierda en todos los tiros para evitar el rough de selva derecho.',
+     high:'El par 5 más amigable del campo. Tres tiros tranquilos sin presión de agua ni búnkers. Driver al centro, hierro largo al área frontal del green, chip al green. Par muy alcanzable. Este hoyo puede mejorar tu tarjeta significativamente.'
+   },
+   info:'Par 5 más corto y accesible. Dogleg a la derecha con bajada que da yardaje extra al drive.'},
+  {n:8,par:4,negro:385,azul:360,blanco:335,dorado:305,rojo:272,si:15,water:false,bG:true,bF:false,casc:false,ws:'',r:'slight-right',
+   hz:[{t:'Búnkers de sand alrededor del green',c:'#d4b896'},{t:'Dogleg suave derecha',c:'#5a8060'}],
+   hcp:{
+     scratch:'El dogleg a la derecha favorece el fade. Para abrir el ángulo al green: driver al lado izquierdo de la calle. El green tiene búnkers en ambos lados — approach con hierro medio apuntando al centro. Desde arena en este green: chip suave sobre el labio, nunca agresivo.',
+     mid:'Driver al centro-izquierda para abrir el ángulo al green. Approach con hierro largo o híbrido: el objetivo es el CENTRO del green entre los búnkers. Evita la arena a toda costa — los bunkers aquí son profundos. Bogey aceptable.',
+     high:'La calle es generosa en este hoyo — driver al centro. El approach con wedge o 9-hierro al centro del green, lejos de los búnkers laterales. Si llegas al green en dos ya ganaste. Bogey en S.I. 15 es un buen resultado.'
+   },
+   info:'Dogleg suave a la derecha. Búnkers rodean el green. El ángulo de entrada desde la izquierda es clave.'},
+  {n:9,par:5,negro:495,azul:467,blanco:438,dorado:405,rojo:365,si:3,water:true,bG:false,bF:false,casc:false,ws:'right',r:'dogleg-left',
+   hz:[{t:'LAGO — lateral derecho del green',c:'#1a5fa8'},{t:'Penalización 1 tiro si cae al agua',c:'#1a5fa8'},{t:'Rough de selva lado izquierdo',c:'#2d6020'}],
+   hcp:{
+     scratch:'Cierre de vuelta con S.I. 3. El lago a la derecha del green es el factor psicológico clave. 3er tiro: usa un hierro o wedge con suficiente distancia pero apuntando SIEMPRE a la izquierda del pin. Nunca ataques la bandera si está del lado derecho cerca del agua. Par aquí es excelente.',
+     mid:'Tres tiros sólidos al centro-izquierda siempre. El lago derecho asusta pero el green es amplio por la izquierda. En el tercer tiro prefiere quedarte corto al green antes que arriesgar el agua. Bogey es aceptable en S.I. 3.',
+     high:'REGLA DE ORO en este hoyo: los 18 tiros van al centro-izquierda, NUNCA hacia la derecha. El lago es lateral y cobra pelotas. Tres tiros conservadores al centro. Si caes al agua: drop en la zona de penalización y sigue jugando con calma.'
+   },
+   info:'Cierre de primera vuelta. Lago a la derecha del green penaliza cualquier approach hacia ese lado.'},
+  {n:10,par:4,negro:306,azul:285,blanco:265,dorado:242,rojo:215,si:18,water:false,bG:false,bF:false,casc:false,ws:'',r:'straight',
+   hz:[{t:'Rough lateral de selva',c:'#2d6020'},{t:'Green con pendiente suave',c:'#5a8060'}],
+   hcp:{
+     scratch:'S.I. 18 — el más fácil. Deberías birdiear este hoyo. Hierro largo desde el tee para máximo control de dirección. Wedge al pin — ataca la bandera sin miedo. El green es receptivo y la pendiente es suave. Este hoyo puede marcar el tono de toda la segunda vuelta.',
+     mid:'Abre la segunda vuelta con confianza. Hierro o híbrido desde el tee, pitch corto con wedge al green. Par casi garantizado si ejecutas bien. Con buen drive hasta podrías llegar cerca del green — evalúa la distancia exacta antes de elegir el palo.',
+     high:'Regalo perfecto para empezar la segunda vuelta. 5-hierro al centro de la calle, pitching wedge al green. La calle es amplia y el green abierto. Relájate y disfruta el hoyo más corto del campo. Par es tu objetivo real aquí.'
+   },
+   info:'El hoyo más corto del campo (306 yds). S.I. 18 — oportunidad directa de birdie para todos los niveles.'},
+  {n:11,par:4,negro:441,azul:415,blanco:387,dorado:355,rojo:315,si:2,water:false,bG:true,bF:false,casc:false,ws:'',r:'dogleg-right',
+   hz:[{t:'Green angosto protegido por búnkers',c:'#d4b896'},{t:'Par 4 largo — S.I. 2',c:'#5a8060'},{t:'Rough de selva ambos lados',c:'#2d6020'}],
+   hcp:{
+     scratch:'El 2do más difícil. 441 yds con green angosto entre búnkers — uno de los targets más exigentes del campo. Driver máximo al centro de la calle para quedar con hierro largo (~180 yds). El approach debe ser preciso: el green tiene menos de 20 yds de ancho entre los bunkers. Si está entre búnkers, apunta al centro sin excepciones.',
+     mid:'Driver largo al centro. Si te quedan más de 200 yds, haz layup a 80-100 yds del green con hierro corto. Wedge al centro del green — no sigas banderas laterales entre búnkers. Bogey en S.I. 2 es un resultado excelente, no te frustres.',
+     high:'Este hoyo te va a costar golpes — es normal, S.I. 2. Dos tiros para acercar bien y pitch corto al centro. No intentes el green en dos si la distancia no es cómoda. Bogey o doble son resultados dignos. Conserva tus golpes para hoyos más fáciles.'
+   },
+   info:'Par 4 largo (441 yds) con green angosto flanqueado por búnkers. S.I. 2 muy merecido.'},
+  {n:12,par:5,negro:518,azul:490,blanco:460,dorado:425,rojo:382,si:8,water:true,bG:false,bF:false,casc:true,ws:'right',r:'straight',
+   hz:[{t:'LAGO + CASCADA — derecha del green',c:'#1a5fa8'},{t:'El agua amenaza el 3er tiro',c:'#1a5fa8'},{t:'Rough lateral de selva',c:'#2d6020'}],
+   hcp:{
+     scratch:'El más largo del campo (518 yds) con el hazard más espectacular. La cascada y el lago derechos son permanentes — nunca ataques la bandera si está en el lado derecho del green. 3er tiro con hierro de control apuntando al lado izquierdo-centro del green. Con viento en contra el layup al área de 100 yds es la decisión correcta.',
+     mid:'518 yds — planifica tres tiros sólidos al centro-izquierda. El lago derecho del green es permanente. En el 3er tiro: sin importar la posición, APUNTA A LA IZQUIERDA. Un bogey aquí protege tu tarjeta de un par 5 con agua.',
+     high:'NUNCA tires a la derecha en el tercer tiro. El lago y la cascada cobran pelotas. Disfruta la vista de la cascada pero respeta el peligro. Tres tiros tranquilos al centro-izquierda. Si caes al agua: drop, penalty, y sigue con calma.'
+   },
+   info:'El hoyo más largo (518 yds) con lago y cascada espectacular a la derecha del green.'},
+  {n:13,par:3,negro:152,azul:138,blanco:125,dorado:111,rojo:96,si:12,water:false,bG:false,bF:false,casc:false,ws:'',r:'straight',
+   hz:[{t:'Terreno ondulado alrededor del green',c:'#5a8060'},{t:'Viento variable según dirección del día',c:'#6abce8'}],
+   hcp:{
+     scratch:'Par 3 de S.I. 12 — debes birdiear aquí. 7 u 8 hierro típico sin viento. Lee el viento con cuidado antes de elegir el palo. El terreno ondulado alrededor del green complica el chip si no llegas al putting surface. Ataca la bandera con confianza.',
+     mid:'Hierro medio al centro del green. Evalúa el viento cuidadosamente. Este es uno de los par 3 más accesibles de la segunda vuelta — un putt de birdie desde el centro es perfectamente posible. Bogey sería un resultado decepcionante.',
+     high:'El par 3 más amigable de la segunda vuelta. 152 yds desde negro — hierro medio o corto. Apunta al centro del green para tener putt de par. Si el chip queda en el terreno ondulado te complica el score, así que prefiere un hierro extra.'
+   },
+   info:'Par 3 de S.I. 12. El terreno ondulado alrededor del green penaliza las salidas de putting surface.'},
+  {n:14,par:4,negro:428,azul:402,blanco:374,dorado:342,rojo:302,si:4,water:false,bG:true,bF:true,casc:false,ws:'',r:'dogleg-left',
+   hz:[{t:'Búnker de fairway que cierra el dogleg',c:'#d4b896'},{t:'2 Búnkers de green defensivos',c:'#d4b896'},{t:'Rough lateral exigente',c:'#2d6020'}],
+   hcp:{
+     scratch:'Gran hoyo estratégico (S.I. 4). El dogleg izquierdo tiene un búnker en la esquina: el driver largo puede cortarlo y dejar un approach corto, o quedarse antes y tener un hierro largo. La decisión depende de tu confianza ese día. El green tiene búnkers defensivos — approach al centro, nunca lateral.',
+     mid:'El búnker de fairway a ~220 yds cierra el dogleg. Driver al centro antes del búnker o layup con hierro largo. Approach con hierro al centro del green entre las trampas. Bogey es un resultado muy digno en S.I. 4. No te compliques.',
+     high:'Driver al centro seguro, antes del búnker del dogleg. Lay-up si no llegas cómodo al green. Wedge al centro — los búnkers defensivos del green son peligrosos. Doble bogey como límite aquí; conserva energía para el final de la ronda.'
+   },
+   info:'Dogleg izquierdo con búnker de fairway estratégico. Premio a la decisión inteligente desde el tee.'},
+  {n:15,par:3,negro:184,azul:170,blanco:156,dorado:138,rojo:118,si:10,water:false,bG:false,bF:false,casc:false,ws:'',r:'straight',
+   hz:[{t:'Viento de bahía — hasta 2 palos de diferencia',c:'#6abce8'},{t:'Vista espectacular de la bahía',c:'#5a8060'},{t:'Rough lateral pronunciado',c:'#2d6020'}],
+   hcp:{
+     scratch:'El par 3 con más presión de viento del campo. 184 yds con viento en contra puede ser equivalente a un par 3 de 220 yds. Antes de pararte: evalúa el viento con hierba lanzada al aire. Híbrido o hierro largo según viento. La vista de la bahía es hermosa pero no dejes que te distraiga al ejecutar.',
+     mid:'Siempre suma 1-2 palos más que tu distancia normal. El viento de la bahía lleva la bola en todas las direcciones. Apunta al CENTRO del green independientemente de la bandera. Un bogey con buen contacto es mejor que intentar un birdie y acabar en rough.',
+     high:'Hierro largo o híbrido al centro del green. Este hoyo tiene el viento más fuerte del campo — no confíes en tu cálculo normal. Llegar al green YA ES un éxito aquí. Disfruta la vista de la bahía y ejecuta con calma. Bogey o doble son resultados dignos.'
+   },
+   info:'Par 3 expuesto al viento dominante de la bahía con vista espectacular hacia el Golfo de México.'},
+  {n:16,par:4,negro:406,azul:381,blanco:355,dorado:323,rojo:288,si:14,water:false,bG:true,bF:false,casc:false,ws:'',r:'straight',
+   hz:[{t:'Búnkers frontales del green (elevado)',c:'#d4b896'},{t:'Approach cuesta arriba engaña la distancia',c:'#5a8060'},{t:'Rough lateral de selva',c:'#2d6020'}],
+   hcp:{
+     scratch:'La calle más amplia del campo — driver largo al centro sin restricciones. EL TRUCO: el green está elevado. Si tu approach normalmente requiere un 7-hierro para esa distancia, usa un 5 o 6-hierro. Los búnkers frontales castigan brutalmente al que se queda corto. Prefiere pasarse 5 yds a quedarse en arena.',
+     mid:'Driver al centro con total confianza — la calle es generosa. Para el approach: identifica la elevación del green y suma 1-2 palos. Lo más común es quedarse corto en los búnkers frontales. Con un palo más llegas al green y tienes putt de par. Bogey en S.I. 14 es manejable.',
+     high:'Buena oportunidad en S.I. 14. La calle amplia facilita el drive. RECUERDA: el approach cuesta arriba siempre necesita más palo de lo que parece. Si normalmente llegas con un 9-hierro, usa el 7-hierro. Quedarse corto en los búnkers frontales es el error más común en este hoyo.'
+   },
+   info:'Par 4 con green elevado y búnkers frontales. El approach cuesta arriba engaña la distancia.'},
+  {n:17,par:4,negro:386,azul:362,blanco:337,dorado:307,rojo:274,si:6,water:true,bG:false,bF:false,casc:false,ws:'left',r:'dogleg-left',
+   hz:[{t:'LAGO — lateral izquierdo del hoyo',c:'#1a5fa8'},{t:'Penalización 1 tiro en agua',c:'#1a5fa8'},{t:'Rough de selva derecho',c:'#2d6020'}],
+   hcp:{
+     scratch:'Agua izquierda en todo el recorrido — la presión psicológica es real. Driver al centro-DERECHA sin dudar. Desde ahí quedan ~180 yds al green con hierro largo. El green no tiene búnkers, lo que facilita el approach. La clave es mentalizarse ANTES de pararse: derecha, derecha, derecha.',
+     mid:'Zona de seguridad clara: centro-derecha de la calle en TODOS los tiros. El lago izquierdo se ve amenazante pero el rough derecho es preferible. Con un buen drive al centro-derecha queda un approach manejable de ~160-180 yds. Bogey es el objetivo real en S.I. 6.',
+     high:'REGLA INQUEBRANTABLE: driver al centro-DERECHA, nunca izquierda. No intentes acortar el dogleg sobre el agua — no vale el riesgo. Si tu drive va al rough derecho tienes tiro, si va al lago pagas penalización. Bogey o doble, siempre lejos del agua.'
+   },
+   info:'Par 4 con lago izquierdo que añade presión psicológica en todo el hoyo. S.I. 6 bien merecido.'},
+  {n:18,par:4,negro:361,azul:337,blanco:313,dorado:285,rojo:253,si:16,water:false,bG:false,bF:false,casc:false,ws:'',r:'straight',
+   hz:[{t:'Rough lateral de selva ambos lados',c:'#2d6020'},{t:'Green de cierre con pendiente suave',c:'#5a8060'}],
+   hcp:{
+     scratch:'Hoyo de cierre con vista a la bahía — oportunidad de birdie. Driver largo al centro de la calle amplia. Wedge o 9-hierro atacando al pin. El green tiene pendiente suave — lee el putt con cuidado para cerrar con estilo. Este hoyo puede salvar o destrozar una tarjeta casi perfecta.',
+     mid:'Excelente oportunidad de par para cerrar la ronda bien. Driver al centro de la calle, wedge o 9-hierro al green. La pendiente del green es suave — el putt de par es alcanzable desde cualquier posición razonable. Termina la ronda con cabeza fría.',
+     high:'El mejor hoyo para cerrar con dignidad. La calle es amplia y el green no tiene búnkers. Driver al centro, pitch suave al centro del green. Disfruta la vista de la bahía mientras ejecutas. Un par aquí es el broche de oro para cualquier ronda.'
+   },
+   info:'Hoyo de cierre con vista a la bahía. Par 4 corto que premia terminar la ronda con elegancia.'},
+];
+
+const teeData={
+  negro:{color:'#888',label:'Negro',rating:74.7,slope:144},
+  azul:{color:'#1e6fa8',label:'Azul',rating:72.1,slope:138},
+  blanco:{color:'#d0d0d0',label:'Blanco',rating:69.8,slope:131},
+  dorado:{color:'#d4a017',label:'Dorado',rating:67.2,slope:123},
+  rojo:{color:'#c0392b',label:'Rojo',rating:64.0,slope:114},
+};
+
+/* ════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════ */
+let scores=new Array(18).fill(null);
+let firData=new Array(18).fill(null);
+let girData=new Array(18).fill(null);
+let puttsData=new Array(18).fill(null);
+// Mirror arrays for "my" card so switching back from a player restores them
+let myScores=scores, myFir=firData, myGir=girData, myPutts=puttsData;
+let selHole=null, activeHcp='mid', isDark=true;
+let players=[];
+let activePlayer=null;
+
+/* ════════════════════════════════════════════════
+   CLUBS DATA
+════════════════════════════════════════════════ */
+const clubsData=[
+  {id:'driver',name:'Driver',pga:275,amateur:200,tip:'El driver es para maximizar distancia. En el tee, usa un tee alto (2.5-3 cm para madera) y posiciona la bola frente al talón delantero. Balancea el peso al 60% en el pie trasero en el backswing. El objetivo es impacto ascendente (+3° a +5° AoA). En El Delfín, el driver es esencial en hoyos 1, 3, 5, 7, 12 y 18.'},
+  {id:'3w',name:'Madera 3',pga:243,amateur:183,tip:'La madera 3 es el palo más versátil del bag para tiros largos de fairway. Impacto ligeramente descendente o neutro. Bola ligeramente adelante del centro. En par 5s como el 1, 7 y 12 de El Delfín, la 3W en el 2do tiro puede acercarte al green. Ideal cuando necesitas distancia máxima desde fairway.'},
+  {id:'5w',name:'Madera 5',pga:215,amateur:170,tip:'Madera 5: excelente para 2dos tiros en par 5s y approaches largos. Más fácil de controlar que la 3W desde lies de fairway. En El Delfín úsala en el 2do tiro del hoyo 9 o 12 cuando el viento ayuda. También efectiva desde rough liviano.'},
+  {id:'hyb3',name:'Híbrido 3',pga:210,amateur:165,tip:'El híbrido 3 es el reemplazante ideal del hierro 3. Swing más pausado que con maderas. Bola en posición ligeramente adelantada. En El Delfín es tu mejor opción para approaches de 200+ yds cuando el lie no es perfecto. Úsalo con confianza desde rough ligero.'},
+  {id:'hyb4',name:'Híbrido 4',pga:198,amateur:155,tip:'Híbrido 4: para approaches de ~190-200 yds o tiros de layup precisos. Swing controlado al 80% de velocidad. En El Delfín es clave para el approach en el hoyo 11 (441 yds) y como layup en el hoyo 5. Preferible al hierro 4 desde cualquier lie.'},
+  {id:'iron4',name:'Hierro 4',pga:188,amateur:148,tip:'Hierro 4: palo de control para 180-190 yds. Impacto descendente, divot delante de la bola. No te excedas en velocidad — la precisión vale más que los yardajes extra. En El Delfín útil para layups estratégicos antes de dogleg en hoyos 2 y 14.'},
+  {id:'iron5',name:'Hierro 5',pga:177,amateur:139,tip:'Hierro 5: uno de los palos más usados en El Delfín para approaches medianos y tiros de tee en par 3s largos. Excelente para el hoyo 6 (186 yds) y hoyo 15 (184 yds) con viento a favor. Mantén el swing relajado y el ritmo constante.'},
+  {id:'iron6',name:'Hierro 6',pga:166,amateur:129,tip:'Hierro 6: ideal para par 3s de ~160-170 yds y approaches medios. En El Delfín perfecto para el hoyo 15 con viento en contra leve, o approaches al hoyo 8 y 16. El control de distancia es más importante que la velocidad máxima.'},
+  {id:'iron7',name:'Hierro 7',pga:155,amateur:120,tip:'Hierro 7: el palo más confiable del bag para la mayoría de jugadores. En El Delfín es tu palo de referencia en par 3s sin mucho viento (hoyos 4 y 13). Para approaches de 150-160 yds, el 7-hierro bien ejecutado es la opción más segura.'},
+  {id:'iron8',name:'Hierro 8',pga:144,amateur:110,tip:'Hierro 8: para approaches de 135-145 yds con alta precisión. El spin reverso del 8-hierro detiene la bola en el green — aprovéchalo en greens firmes. En El Delfín ideal para el hoyo 4 (141 yds) y approaches cortos con bandera detrás de bunker.'},
+  {id:'iron9',name:'Hierro 9',pga:132,amateur:100,tip:'Hierro 9: control total desde 125-135 yds. Con este palo debes siempre apuntar a la bandera — es corto y preciso. En El Delfín úsalo en approaches al hoyo 2 (343 yds con buen drive) y hoyo 10 (306 yds). Swing 3/4 para mayor control.'},
+  {id:'pw',name:'Pitching Wedge',pga:118,amateur:90,tip:'Pitching Wedge (45-48°): approach de 110-125 yds. El palo clave para el scoring en El Delfín. En hoyos cortos como el 2, 10 y 18, el PW bien ejecutado con alto backspin puede dejar el putt de birdie. Swing 3/4 para 100 yds, completo para 118 yds.'},
+  {id:'gap',name:'Gap Wedge',pga:104,amateur:78,tip:'Gap Wedge (50-52°): llena el espacio entre PW y SW. Para 90-105 yds con máxima precisión. En El Delfín úsalo en hoyos donde quieras precisión sobre distancia, especialmente cuando la bandera está detrás de bunker (hoyos 5, 8, 11). Descenso agresivo, divot profundo.'},
+  {id:'sw',name:'Sand Wedge',pga:80,amateur:60,tip:'Sand Wedge (54-56°): para 70-90 yds y bunkers de arena. En El Delfín los bunkers del hoyo 11 y 14 requieren SW con cara abierta y swing acelerado. Desde fairway a 80 yds: swing 3/4 con descenso nítido. Nunca desaceleres en el impacto desde arena.'},
+  {id:'lob',name:'Lob Wedge',pga:65,amateur:48,tip:'Lob Wedge (58-60°): para tiros de 50-70 yds con alto y corto. Ideal para el rough de selva de El Delfín cuando necesitas altura rápida. Para bunkers con labio alto. El error más común: abrir demasiado la cara sin compensar el grip. Practica swing pendular para control de distancia.'},
+  {id:'putter',name:'Putter',pga:0,amateur:0,tip:'El putter define el score. En El Delfín los greens de Tiff Eagle tienen grano pronunciado — los putts con el grano (hacia la bahía en la mayoría de greens) ruedan más rápido. Siempre lee la pendiente general del green desde detrás de la bola Y desde detrás del hoyo. Para putts de >6 metros: lee primero la velocidad, luego la dirección.'},
+];
+
+/* ════════════════════════════════════════════════
+   GAMES DATA
+════════════════════════════════════════════════ */
+const gamesData=[
+  {title:'Skins',players:'2–8 jugadores',badge:'Clásico',body:`
+    <h4>Cómo se juega</h4>
+    <p>Cada hoyo tiene un valor (una "piel"). El jugador con el score más bajo en un hoyo gana la piel. Si hay empate, la piel se acumula al siguiente hoyo.</p>
+    <h4>Reglas clave</h4>
+    <ul><li>Empate = la piel se arrastra al próximo hoyo</li><li>El valor se puede definir en pesos o puntos</li><li>Al final se cuentan las pieles ganadas</li></ul>
+    <h4>Estrategia en El Delfín</h4>
+    <p>Los hoyos más valiosos suelen ser los 15-18 cuando ya hay pieles acumuladas. En el hoyo 12 (agua + cascada) muchos jugadores fallan — gran oportunidad de ganar una piel por consistencia.</p>
+  `},
+  {title:'Nassau',players:'2–4 jugadores',badge:'Favorito',body:`
+    <h4>Cómo se juega</h4>
+    <p>Tres apuestas en una: la primera vuelta (hoyos 1-9), la segunda vuelta (hoyos 10-18) y el total de 18 hoyos. Cada apuesta es independiente.</p>
+    <h4>Reglas clave</h4>
+    <ul><li>3 oportunidades distintas de ganar</li><li>Se puede jugar en stroke play o match play</li><li>Variante "Press": si vas perdiendo por 2 o más, puedes hacer press (nueva apuesta en las hoyas restantes)</li></ul>
+    <h4>Tip para El Delfín</h4>
+    <p>La segunda vuelta suele ser más difícil (hoyos 11 y 14 son brutales). Si vas ganando la primera, juega conservador en la segunda vuelta.</p>
+  `},
+  {title:'Bingo Bango Bongo',players:'2–6 jugadores',badge:'Divertido',body:`
+    <h4>Cómo se juega</h4>
+    <p>En cada hoyo hay 3 puntos disponibles:</p>
+    <ul>
+      <li>🟢 <strong>Bingo</strong>: primer jugador en llegar al green</li>
+      <li>📍 <strong>Bango</strong>: jugador más cercano al hoyo cuando todos están en el green</li>
+      <li>🏁 <strong>Bongo</strong>: primer jugador en embocar</li>
+    </ul>
+    <h4>Reglas clave</h4>
+    <ul><li>Se juega en orden estricto (más lejos juega primero)</li><li>No hay gimmies — hay que terminar el hoyo</li><li>Al final: el jugador con más puntos gana</li></ul>
+    <h4>Ventaja en El Delfín</h4>
+    <p>Los hoyos 6 y 15 (par 3 con viento) nivelan el campo — incluso un jugador alto puede ganar el Bingo si llega al green primero.</p>
+  `},
+  {title:'Wolf',players:'4 jugadores (exactamente)',badge:'Estratégico',body:`
+    <h4>Cómo se juega</h4>
+    <p>Cada hoyo uno de los 4 jugadores es el "Wolf". El Wolf decide <strong>después de cada drive</strong> si quiere al jugador como socio (2v2) o si juega solo (1v3).</p>
+    <h4>Reglas clave</h4>
+    <ul><li>El Wolf rota cada hoyo (1→2→3→4→1...)</li><li>Wolf solo: vale doble si gana, doble si pierde</li><li>"Lone Wolf" antes de cualquier drive: vale triple</li><li>El formato es better ball (mejor score del equipo cuenta)</li></ul>
+    <h4>Tip en El Delfín</h4>
+    <p>En el hoyo 5 (S.I. 1) conviene buscar socio siempre. En hoyos cortos como el 10 el Wolf fuerte puede ir solo con ventaja.</p>
+  `},
+  {title:'Scramble',players:'2–5 jugadores',badge:'Equipo',body:`
+    <h4>Cómo se juega</h4>
+    <p>Todos los jugadores tiran desde el tee. Se elige el mejor tiro y TODOS juegan su siguiente tiro desde esa posición. Se repite hasta terminar el hoyo.</p>
+    <h4>Reglas clave</h4>
+    <ul><li>Todos juegan desde dentro de 1 largo de palo del mejor tiro</li><li>En el green: dentro de 30 cm del mejor putt</li><li>Se puede requerir mínimo de drives por jugador</li></ul>
+    <h4>Para El Delfín</h4>
+    <p>Formato perfecto para grupos mixtos. En el hoyo 12 (lago + cascada) el scramble permite ser más agresivo — si uno falla hay respaldo.</p>
+  `},
+  {title:'Stableford',players:'Cualquier número',badge:'Individual',body:`
+    <h4>Cómo se juega</h4>
+    <p>Se acumulan puntos según el score en cada hoyo relativo al par:</p>
+    <ul>
+      <li>Eagle: 4 puntos</li>
+      <li>Birdie: 3 puntos</li>
+      <li>Par: 2 puntos</li>
+      <li>Bogey: 1 punto</li>
+      <li>Doble bogey o peor: 0 puntos</li>
+    </ul>
+    <h4>Ventaja</h4>
+    <p>Un hoyo malo no destruye toda la tarjeta. Ideal para jugadores altos o cuando el campo está difícil. El objetivo en El Delfín: superar 36 puntos (par en todos).</p>
+  `},
+  {title:'Match Play',players:'2 jugadores o 2 equipos',badge:'Clásico',body:`
+    <h4>Cómo se juega</h4>
+    <p>Se juega hoyo por hoyo. Quien tiene el score más bajo en un hoyo gana ese hoyo ("gana el hoyo"). Al final gana quien lleve más hoyos ganados.</p>
+    <h4>Terminología</h4>
+    <ul><li>"2 UP": llevas 2 hoyos de ventaja</li><li>"All Square": empatados</li><li>"2&1": ganaste cuando llevas 2 de ventaja y queda 1 hoyo</li></ul>
+    <h4>Psicología en El Delfín</h4>
+    <p>En match play el hoyo 5 (S.I. 1) puede cambiar todo el momentum. Ganar ese hoyo con par o bogey frente a un rival con doble es oro puro.</p>
+  `},
+  {title:'Vegas',players:'4 jugadores (2 equipos)',badge:'Divertido',body:`
+    <h4>Cómo se juega</h4>
+    <p>Los equipos de 2 combinan sus scores en un número de 2 dígitos. El equipo con el número más bajo gana la diferencia en puntos o pesos.</p>
+    <h4>Ejemplo</h4>
+    <p>Equipo A: 4 y 5 = 45. Equipo B: 3 y 6 = 36. Equipo B gana 45-36 = 9 unidades.</p>
+    <h4>Regla clave</h4>
+    <p>El número más bajo va adelante: si tienes 3 y 6, el número es 36, no 63. Esto crea situaciones dramáticas en cada hoyo.</p>
+  `},
+  {title:'Shanble (Shamble)',players:'2–5 jugadores',badge:'Equipo',body:`
+    <h4>Cómo se juega</h4>
+    <p>Híbrido entre Scramble y Stroke Play. Todos tiran desde el tee, se elige el mejor drive, y desde ahí cada jugador juega su propia bola hasta el final del hoyo.</p>
+    <h4>Score</h4>
+    <p>Se cuenta el score más bajo del equipo en cada hoyo (como Best Ball) o se suman scores según el formato acordado.</p>
+    <h4>Ventaja</h4>
+    <p>Combina la emoción del scramble en el tee con la competencia individual en el approach y green. Ideal para grupos mixtos en El Delfín.</p>
+  `},
+  {title:'King of the Hill',players:'3–5 jugadores',badge:'Competitivo',body:`
+    <h4>Cómo se juega</h4>
+    <p>El jugador con el mejor score en el primer hoyo es el "Rey". Para desbancar al Rey hay que superar su score en el siguiente hoyo. El Rey acumula puntos por cada hoyo que mantiene su corona.</p>
+    <h4>Variante popular</h4>
+    <p>El Rey solo puede perder la corona, nunca empatar — en caso de empate el Rey conserva el título.</p>
+    <h4>En El Delfín</h4>
+    <p>Los hoyos 6 y 15 (par 3 con viento impredecible) pueden derribar al Rey más dominante. La estrategia es ser consistente, no brillante.</p>
+  `},
+  {title:'Sixes (Round Robin)',players:'4 jugadores',badge:'Dinámico',body:`
+    <h4>Cómo se juega</h4>
+    <p>El recorrido se divide en tres segmentos de 6 hoyos. Los equipos de 2 se reconfiguran completamente en cada segmento, asegurando que todos jueguen con y contra todos.</p>
+    <h4>Hoyos en El Delfín</h4>
+    <ul><li>Segmento 1: Hoyos 1-6</li><li>Segmento 2: Hoyos 7-12</li><li>Segmento 3: Hoyos 13-18</li></ul>
+    <h4>Score</h4>
+    <p>Cada segmento es una mini-competencia Better Ball. El equipo con mejor score en cada segmento gana un punto. Gana quien acumule más puntos.</p>
+  `},
+  {title:'Snake (Tres-Putts)',players:'2–6 jugadores',badge:'Penalizador',body:`
+    <h4>Cómo se juega</h4>
+    <p>La "serpiente" pasa al jugador que hace tres putts en un hoyo. El jugador que tenga la serpiente al final de la ronda paga una penalización acordada.</p>
+    <h4>Reglas</h4>
+    <ul><li>El que hace 3 putts "agarra la serpiente"</li><li>Si otro jugador hace 3 putts, le pasa la serpiente</li><li>Si el que ya tiene la serpiente hace 3 putts, la paga doble</li></ul>
+    <h4>En El Delfín</h4>
+    <p>Los greens de Tiff Eagle son rápidos — el hoyo 9 (bajada hacia el green con lago) genera muchos tres-putts por exceso de velocidad.</p>
+  `},
+];
+
+/* ════════════════════════════════════════════════
+   RULES DATA
+════════════════════════════════════════════════ */
+const rulesData=[
+  {n:'Regla 1.1',title:'El Objeto del Juego',body:'El golf consiste en jugar una bola desde el tee hasta el hoyo mediante un golpe o golpes sucesivos de acuerdo con las Reglas. El jugador debe jugar el campo tal como lo encuentre y la bola tal como queda, y si lo anterior no es posible, actuar de acuerdo a las Reglas.'},
+  {n:'Regla 1.2',title:'Conducta del Jugador',body:'Todos los jugadores deben comportarse con integridad, mostrando consideración hacia los demás y cuidando el campo. Un Comité puede descalificar a un jugador cuya conducta sea contraria al espíritu del juego, aunque no esté expresamente prohibida en las Reglas.'},
+  {n:'Regla 1.3',title:'Jugar de Acuerdo con las Reglas',body:'Los jugadores deben aplicar las Reglas ellos mismos y son responsables de conocerlas. Si un jugador aplica a propósito una penalización incorrecta o acuerda con otro ignorar una Regla, ambos son descalificados.'},
+  {n:'Regla 4.1',title:'Palos Permitidos — Máximo 14',body:'Durante una ronda el jugador puede tener un máximo de 14 palos. Comenzar con más de 14: 2 golpes de penalización por cada hoyo en que la infracción ocurrió, máximo 4 golpes de penalización por ronda. El palo en exceso debe declararse fuera de uso inmediatamente.'},
+  {n:'Regla 4.2',title:'Bolas Permitidas',body:'La bola utilizada debe estar en la Lista de Bolas de Golf Conformes de la USGA. Queda prohibido usar una bola alterada intencionalmente (cortada, deformada o tratada con sustancias). Una bola que se parta durante el juego puede reemplazarse sin penalización.'},
+  {n:'Regla 5.3',title:'Hora de Salida y Grupos',body:'El jugador debe estar presente y listo para jugar a la hora de salida asignada. Llegar tarde sin causa justificada: descalificación si supera 5 minutos. Si llega dentro de los 5 minutos: 2 golpes en stroke play (pérdida del hoyo en match play). El orden de salida en el primer tee es determinado por el Comité.'},
+  {n:'Regla 5.6',title:'Ritmo de Juego Razonable',body:'Los jugadores deben jugar a un ritmo razonable para no demorar a los demás. Se recomienda no más de 40 segundos por golpe. Si el grupo está al menos un hoyo por detrás, debe invitar al siguiente grupo a pasar. El Comité puede establecer límites de tiempo y aplicar penalizaciones por juego lento.'},
+  {n:'Regla 6.1',title:'La Bola en Juego',body:'La bola de un jugador está en juego desde el momento en que golpea en el tee de salida. Permanece en juego hasta que entra en el hoyo, salvo que esté perdida, fuera de límites, levantada o reemplazada según las Reglas. Jugar la bola equivocada = 2 golpes de penalización.'},
+  {n:'Regla 6.2',title:'Jugar desde el Tee',body:'En el tee de salida, la bola puede colocarse en un tee (máximo 4 pulgadas de altura). El jugador puede pararse fuera del área de tee pero la bola debe estar dentro. Si golpea fuera del área de tee en stroke play: 2 golpes de penalización y debe volver a golpear desde el área de tee correcta.'},
+  {n:'Regla 6.3',title:'Bola Incorrecta',body:'Jugar una bola incorrecta (no la tuya) = 2 golpes de penalización. El error debe corregirse jugando la bola correcta antes de terminar el hoyo. Si no se corrige: descalificación en stroke play. Los golpes jugados con la bola incorrecta no cuentan en el score.'},
+  {n:'Regla 7.1',title:'Búsqueda de la Bola',body:'El jugador puede tomar acciones razonables para encontrar su bola: apartar obstáculos sueltos, agacharse para ver entre vegetación. Tiempo de búsqueda: 3 minutos. Si no se encuentra en ese tiempo, la bola es perdida. Si la bola se mueve accidentalmente durante la búsqueda: 1 golpe de penalización, reponer la bola.'},
+  {n:'Regla 8.1',title:'Acciones que Mejoran las Condiciones',body:'Un jugador no puede mejorar: la posición o lie de su bola, el área de swing previsto o deseado, su línea de juego, ni el área en la que va a caer la bola. Está prohibido doblar o romper vegetación, fijar elementos del terreno o presionar irregularidades del suelo. Penalización: 2 golpes.'},
+  {n:'Regla 9.2',title:'Bola Movida por el Jugador',body:'Si un jugador mueve accidentalmente su bola en juego (excepto cuando se busca o se marca), recibe 1 golpe de penalización y debe reponer la bola en su posición original. Sin penalización si la bola se mueve al retirar un obstáculo suelto o al marcarla con un marcador.'},
+  {n:'Regla 10.1',title:'Cómo Golpear la Bola',body:'El jugador debe golpear la bola con la cabeza del palo de manera justa, sin empujarla, rasparla ni cucharearla. Está prohibido golpear la bola mientras está en movimiento (excepto en el green o en agua en movimiento). Solo se permite un golpe por vez; el swing que pasa sin tocar la bola cuenta como golpe si fue intencional.'},
+  {n:'Regla 10.2',title:'Consejo e Información Pública',body:'Solo puedes pedir o dar consejo a tu caddie o socio de equipo. Pedirle consejo a otro jugador = 2 golpes de penalización. La información pública (distancias marcadas, posición de bandera, obstáculos visibles) no es consejo y cualquiera puede compartirla libremente. El caddie no puede indicar la línea de juego desde atrás mientras el jugador realiza el swing.'},
+  {n:'Regla 11.1',title:'Bola en Movimiento Desviada Accidentalmente',body:'Si la bola en movimiento golpea accidentalmente al jugador, caddie, equipo, a otro jugador o a cualquier persona: sin penalización, y la bola se juega desde donde queda. Excepción: en el green, si la bola en movimiento golpea el marcador, se vuelve a putear sin penalización.'},
+  {n:'Regla 13.1',title:'Reglas del Putting Green',body:'En el green puedes: marcar, levantar y limpiar tu bola; reparar piques de bola y daños hechos por pisadas en el green; quitar arena y tierra suelta; retirar la bandera. No puedes: probar la superficie del green con los palos; hacer una marca de práctica; doblar el césped intencionalmente. Penalización: 2 golpes.'},
+  {n:'Regla 13.2',title:'La Bandera',body:'Puedes jugar con la bandera en el hoyo, o pedirle a alguien que la atienda o retire. Si la bola en movimiento golpea la bandera atendida: 2 golpes de penalización. Si juegas desde fuera del green sin bandera y la bola cae en el hoyo: cuenta el golpe, no hay penalización. Desde 2019 es legal que la bola toque la bandera desde el green.'},
+  {n:'Regla 14.1',title:'Marcación, Levantamiento y Limpieza',body:'Antes de levantar la bola debes marcar su posición con un marcador de bola (moneda u objeto similar). La bola debe reponerse exactamente en la posición marcada. En el green puedes limpiar la bola libremente al levantarla. Fuera del green solo puedes limpiarla al reponerse en ciertas situaciones de alivio.'},
+  {n:'Regla 15.1',title:'Obstáculos Sueltos',body:'Piedras, hojas secas, ramas rotas, tierra, arena, gusanos, insectos: pueden retirarse en cualquier área sin penalización. Excepción: en un bunker, retirar arena o tierra suelta dentro del bunker donde descansa la bola = 2 golpes. Si la bola se mueve al retirar el obstáculo fuera del bunker o green = 1 golpe, reponer la bola.'},
+  {n:'Regla 16.1',title:'Alivio de Circunstancias Anormales del Terreno',body:'Agua temporal, tierra removida, madrigueras de animales, zonas en reparación: dan alivio gratuito. Método: identificar el punto de alivio más cercano que evite la interferencia, hacer el drop dentro de 1 largo de palo de ese punto, no más cerca del hoyo. La inferencia debe ser real: posición de la bola, stance o swing previsto.'},
+  {n:'Regla 17.1',title:'Áreas de Penalización — Opciones',body:'Cuando la bola está en un área de penalización (antes llamada water hazard), el jugador tiene estas opciones bajo 1 golpe de penalización: (1) Jugar desde el último punto donde jugó la bola; (2) Drop en línea atrás desde el hoyo pasando por donde la bola cruzó el límite del área, sin límite de distancia atrás.'},
+  {n:'Regla 17.2',title:'Área de Penalización Roja (Lateral)',body:'Las áreas de penalización marcadas en rojo ofrecen una opción adicional bajo 1 golpe: drop dentro de 2 largos de palo del punto donde la bola cruzó el límite del área, no más cerca del hoyo. También puede hacerse drop en el lado opuesto del área a la misma distancia del hoyo. En El Delfín los lagos de h.9, h.12 y h.17 son áreas rojas.'},
+  {n:'Regla 18.1',title:'Fuera de Límites — Penalización de Golpe y Distancia',body:'Fuera de límites (marcado con estacas blancas o líneas blancas): la bola está OB si toda ella queda más allá de la línea. Penalización: 1 golpe + distancia (volver al punto anterior y golpear nuevamente). El jugador puede jugar una bola provisional antes de buscar la original para ahorrar tiempo.'},
+  {n:'Regla 18.2',title:'Bola Perdida',body:'Una bola está perdida si no se encuentra en 3 minutos de búsqueda. Penalización: golpe y distancia (igual que OB). Se recomienda siempre jugar una bola provisional cuando hay probabilidad de que la original esté perdida o OB. Regla local opcional (2019): drop con 2 golpes de penalización cerca del lugar donde se perdió para agilizar el juego.'},
+  {n:'Regla 19.1',title:'Bunkers — Cómo Jugar',body:'En un bunker NO puedes: tocar la arena con la mano o el palo antes del backswing; hacer un swing de práctica tocando la arena; tocar la arena con el palo al dirigirlo hacia la bola antes del golpe. SÍ puedes: retirar obstáculos artificiales inamovibles; retirar objetos sueltos (excepto arena y tierra suelta adyacente a la bola).'},
+  {n:'Regla 19.2',title:'Bunkers — Opciones de Alivio',body:'Bajo penalización de 1 golpe: drop fuera del bunker, manteniendo el punto donde descansaba la bola entre el hoyo y el punto de drop, sin límite de distancia atrás. También puede volver al punto anterior. Bajo 2 golpes de penalización (nueva opción 2019): drop fuera del bunker en cualquier lugar en la línea atrás del hoyo pasando por donde estaba la bola.'},
+  {n:'Regla 20.1',title:'Bola Injugable',body:'En cualquier lugar del campo excepto área de penalización, el jugador puede declarar su bola injugable. Opciones bajo 1 golpe: (1) Volver al punto donde jugó el último golpe; (2) Drop dentro de 2 largos de palo de la posición de la bola, no más cerca del hoyo; (3) Drop en la línea atrás desde el hoyo pasando por la posición de la bola, sin límite de distancia.'},
+  {n:'Regla 22.1',title:'Match Play — Reglas Especiales',body:'En match play: se juega hoyo por hoyo, gana quien lleva más hoyos. Un jugador puede conceder el golpe siguiente, el hoyo o el partido en cualquier momento. Los errores de procedimiento (como jugar fuera de turno) resultan en pérdida del hoyo, no en 2 golpes. Las penalizaciones de stroke play no siempre aplican en match play.'},
+  {n:'Regla 23.1',title:'Cuatro Bolas — Best Ball',body:'En cuatro bolas cada jugador usa su propia bola. El mejor score del equipo por hoyo es el score del equipo. Una penalización solo afecta al jugador que la comete, no al socio. Si un jugador comete una infracción que podría beneficiar al equipo (como marcar la línea en el green), ambos socios reciben la penalización.'},
+  {n:'Regla 24.1',title:'Reparación de Daños — Green y Terreno',body:'Desde 2019 puedes reparar en el green cualquier daño causado por pisadas, marcas de zapatos, indentaciones por palos u otros daños artificiales. También puedes reparar daños naturales como baches de animales en el green. NO puedes reparar daños naturales del terreno fuera del green ni irregularidades de la superficie que mejoren el lie o el swing.'},
+];
+
+/* ════════════════════════════════════════════════
+   STORAGE HELPERS
+════════════════════════════════════════════════ */
+function saveToLS(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}}
+function loadFromLS(key,def){try{const v=localStorage.getItem(key);return v?JSON.parse(v):def;}catch(e){return def;}}
+
+/* ════════════════════════════════════════════════
+   CLOCK & WEATHER
+════════════════════════════════════════════════ */
+function tick(){
+  const now=new Date();
+  document.getElementById('clock-time').textContent=now.toLocaleTimeString('es-MX',{timeZone:'America/Mexico_City',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+  document.getElementById('clock-date').textContent=now.toLocaleDateString('es-MX',{timeZone:'America/Mexico_City',weekday:'short',day:'2-digit',month:'short'});
+}
+setInterval(tick,1000); tick();
+
+async function loadWeather(){
+  const ph=document.getElementById('wx-placeholder');
+  try{
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=19.82&longitude=-90.58&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,precipitation,weather_code,apparent_temperature&wind_speed_unit=kmh&timezone=America/Mexico_City',{mode:'cors'});
+    if(!r.ok) throw new Error();
+    const d=await r.json();
+    const c=d.current;
+    const icon=c.weather_code===0?'☀️':c.weather_code<=2?'⛅':c.weather_code<=3?'☁️':c.weather_code<=49?'🌫️':c.weather_code<=69?'🌧️':c.weather_code<=79?'❄️':'⛈️';
+    const dirs=['N','NE','E','SE','S','SO','O','NO'];
+    const dir=dirs[Math.round(c.wind_direction_10m/45)%8];
+    const ok=c.wind_speed_10m<30&&c.precipitation<2;
+    const warn=c.wind_speed_10m>=30;
+    const btxt=ok?'#4CAF74':'#e74c3c';
+    const blabel=warn?'⚠️ Viento fuerte':!ok?'🌧️ Lluvia':'✅ Jugable';
+    ph.outerHTML=`
+      <span style="font-size:1.05rem">${icon}</span>
+      <div class="wx-item"><strong>${Math.round(c.temperature_2m)}°C</strong></div>
+      <div class="wx-item">💧${c.relative_humidity_2m}%</div>
+      <div class="wx-item">💨${Math.round(c.wind_speed_10m)}km/h ${dir}</div>
+      <div style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:${btxt};background:rgba(0,0,0,.3);padding:3px 8px;border-radius:99px;">${blabel}</div>`;
+  }catch(e){
+    ph.textContent='⚠️ Clima no disponible';
+  }
+}
+loadWeather();
+
+/* ════════════════════════════════════════════════
+   TABS
+════════════════════════════════════════════════ */
+function showTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='historial') renderHistorial();
+  if(id==='hoyos'){buildHoleNav();renderHoleView(0);}
+}
+
+/* ════════════════════════════════════════════════
+   SCORECARD
+════════════════════════════════════════════════ */
+function buildScorecard(){
+  const sum=(a,k)=>a.reduce((s,h)=>s+h[k],0);
+  let html='';
+  holes.forEach((h,i)=>{
+    const cls=h.par===3?'par3':h.par===5?'par5':'par4';
+    const isBreak=i===8;
+    // FIR only relevant for par 4 and 5
+    const firCell=h.par>3?
+      `<td onclick="event.stopPropagation()"><input type="checkbox" class="stat-check" id="fir-${h.n}" onchange="setFir(${i},this.checked)" ${firData[i]?'checked':''}></td>`:
+      `<td style="color:var(--txt3);font-size:.6rem">—</td>`;
+    html+=`<tr class="${cls}" id="row-${h.n}">
+      <td onclick="selectHole(${i})" style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--gold)">H.${h.n}</td>
+      <td>${h.par}</td>
+      <td style="font-size:.6rem">${h.negro}</td>
+      <td style="font-size:.6rem">${h.azul}</td>
+      <td style="font-size:.6rem">${h.blanco}</td>
+      <td style="font-size:.6rem;color:var(--dorado-l)">${h.dorado}</td>
+      <td style="font-size:.6rem">${h.rojo}</td>
+      <td style="font-size:.6rem;color:var(--azure)">${h.si}</td>
+      <td onclick="event.stopPropagation()"><input class="score-inp" id="sc-${h.n}" type="number" min="1" max="15" value="${scores[i]||''}" inputmode="numeric" oninput="setScore(${i},this.value)"></td>
+      ${firCell}
+      <td onclick="event.stopPropagation()"><input type="checkbox" class="stat-check" id="gir-${h.n}" onchange="setGir(${i},this.checked)" ${girData[i]?'checked':''}></td>
+      <td onclick="event.stopPropagation()"><input class="putts-inp" id="putts-${h.n}" type="number" min="0" max="9" value="${puttsData[i]||''}" inputmode="numeric" oninput="setPutts(${i},this.value)"></td>
+    </tr>`;
+    if(isBreak){
+      const f=holes.slice(0,9);
+      html+=`<tr class="sub-r"><td colspan="8" style="text-align:left;padding-left:8px">OUT · Par 37</td><td id="out-sc">—</td><td colspan="3"></td></tr>`;
+    }
+  });
+  const b=holes.slice(9,18);
+  html+=`<tr class="sub-r"><td colspan="8" style="text-align:left;padding-left:8px">IN · Par 35</td><td id="in-sc">—</td><td colspan="3"></td></tr>`;
+  html+=`<tr class="tot-r"><td colspan="8" style="text-align:left;padding-left:8px">TOTAL · Par 72</td><td id="tot-sc">—</td><td colspan="3"></td></tr>`;
+  document.getElementById('sc-body').innerHTML=html;
+}
+
+function setScore(idx,val){
+  if(activePlayer!==null){
+    // writing into a player's card — keep player array in sync
+    const v=val===''?null:parseInt(val);
+    players[activePlayer].scores[idx]=isNaN(v)?null:v;
+  }
+  const v=val===''?null:parseInt(val);
+  scores[idx]=isNaN(v)?null:v;
+  const inp=document.getElementById(`sc-${holes[idx].n}`);
+  if(inp){
+    if(scores[idx]!==null){
+      const d=scores[idx]-holes[idx].par;
+      inp.className='score-inp '+(d<=-2?'eagle':d===-1?'birdie':d===0?'par-s':d===1?'bogey':d===2?'dbl':'trp');
+    }else inp.className='score-inp';
+  }
+  updateBar();
+  updatePlayers(idx);
+}
+
+function setFir(idx,val){ firData[idx]=val; updateStats(); }
+function setGir(idx,val){ girData[idx]=val; updateStats(); }
+function setPutts(idx,val){ puttsData[idx]=val===''?null:parseInt(val); updateStats(); updateBar(); }
+
+function updateBar(){
+  const all=scores.filter(s=>s!==null);
+  const tot=all.reduce((a,b)=>a+b,0);
+  let parS=0; scores.forEach((s,i)=>{if(s!==null)parS+=holes[i].par;});
+  const diff=tot-parS;
+  const frontS=scores.slice(0,9).filter(s=>s!==null);
+  const backS=scores.slice(9,18).filter(s=>s!==null);
+  const outT=frontS.reduce((a,b)=>a+b,0);
+  const inT=backS.reduce((a,b)=>a+b,0);
+  const totalPutts=puttsData.filter(p=>p!==null).reduce((a,b)=>a+b,0);
+  document.getElementById('rb-total').textContent=all.length>0?tot:'—';
+  const dEl=document.getElementById('rb-par');
+  dEl.textContent=all.length>0?(diff>0?'+'+diff:diff===0?'E':diff):'—';
+  dEl.style.color=diff<0?'var(--green-l)':diff===0?'var(--gold)':'var(--red)';
+  document.getElementById('rb-out').textContent=frontS.length>0?outT:'—';
+  document.getElementById('rb-in').textContent=backS.length>0?inT:'—';
+  document.getElementById('rb-putts').textContent=puttsData.filter(p=>p!==null).length>0?totalPutts:'—';
+  // Subtotals in table
+  if(document.getElementById('out-sc'))document.getElementById('out-sc').textContent=frontS.length>0?outT:'—';
+  if(document.getElementById('in-sc'))document.getElementById('in-sc').textContent=backS.length>0?inT:'—';
+  if(document.getElementById('tot-sc'))document.getElementById('tot-sc').textContent=all.length>0?tot:'—';
+}
+
+function updateStats(){
+  const par45=holes.filter(h=>h.par>3);
+  const firPlayed=par45.filter((h,i45)=>{
+    const idx=holes.indexOf(h);
+    return scores[idx]!==null;
+  });
+  const firMade=par45.filter((h)=>{
+    const idx=holes.indexOf(h);
+    return firData[idx]===true && scores[idx]!==null;
+  });
+  const girPlayed=holes.filter((h,i)=>scores[i]!==null);
+  const girMade=holes.filter((h,i)=>girData[i]===true && scores[i]!==null);
+  const puttsPlayed=puttsData.filter(p=>p!==null);
+  const totalPutts=puttsPlayed.reduce((a,b)=>a+b,0);
+
+  if(firPlayed.length>0||girPlayed.length>0||puttsPlayed.length>0){
+    document.getElementById('stats-summary').style.display='block';
+    const firPct=firPlayed.length>0?Math.round(firMade.length/firPlayed.length*100):0;
+    const girPct=girPlayed.length>0?Math.round(girMade.length/girPlayed.length*100):0;
+    const puttAvg=puttsPlayed.length>0?(totalPutts/puttsPlayed.length).toFixed(1):'—';
+    document.getElementById('fir-pct').textContent=firPct+'%';
+    document.getElementById('fir-bar').style.width=firPct+'%';
+    document.getElementById('gir-pct').textContent=girPct+'%';
+    document.getElementById('gir-bar').style.width=girPct+'%';
+    document.getElementById('putt-avg').textContent=puttAvg+(puttAvg!=='—'?' putts/h':'');
+    const puttPct=puttAvg!=='—'?Math.max(0,100-((parseFloat(puttAvg)-1.5)*100)):0;
+    document.getElementById('putt-bar').style.width=Math.min(100,puttPct)+'%';
+  }
+}
+
+function selectHole(i){
+  selHole=i;
+  const h=holes[i];
+  document.getElementById('hole-detail').style.display='block';
+  document.getElementById('hd-num').textContent='H.'+h.n;
+  document.getElementById('hd-par').textContent='Par '+h.par+' · '+h.negro+' yds';
+  document.getElementById('hd-si').textContent='S.I. '+h.si;
+  document.getElementById('hd-svg').innerHTML=buildHoleSVG(h,80,120);
+  renderHcpText(h);
+  renderHzList(h);
+  document.getElementById('hole-detail').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function setHcp(level,btn){
+  activeHcp=level;
+  document.querySelectorAll('.hcp-tab').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  if(selHole!==null) renderHcpText(holes[selHole]);
+}
+
+function renderHcpText(h){
+  document.getElementById('hcp-text').textContent=h.hcp[activeHcp];
+}
+
+function renderHzList(h){
+  const el=document.getElementById('hz-list');
+  el.innerHTML=h.hz.map(hz=>`<span class="hz-chip" style="background:${hz.c}22;border-color:${hz.c}66;color:${hz.c}"><span style="width:7px;height:7px;border-radius:50%;background:${hz.c};display:inline-block;flex-shrink:0"></span>${hz.t}</span>`).join('');
+}
+
+function resetScores(){
+  if(!confirm('¿Limpiar la tarjeta actual?')) return;
+  scores.fill(null);
+  firData.fill(null);
+  girData.fill(null);
+  puttsData.fill(null);
+  buildScorecard();
+  updateBar();
+  players.forEach(p=>p.scores.fill(null));
+  renderPlayers();
+  document.getElementById('stats-summary').style.display='none';
+  document.getElementById('hole-detail').style.display='none';
+  showToast('🔄 Tarjeta limpiada');
+}
+
+/* ════════════════════════════════════════════════
+   SAVE / HISTORY
+════════════════════════════════════════════════ */
+function openSaveModal(){
+  const played=scores.filter(s=>s!==null).length;
+  if(played===0){showToast('⚠️ Anota al menos un hoyo primero');return;}
+  document.getElementById('modal-save').classList.add('open');
+}
+
+function saveScore(){
+  const name=document.getElementById('save-name').value.trim();
+  const tee=document.getElementById('save-tee').value;
+  const notes=document.getElementById('save-notes').value.trim();
+  const msg=document.getElementById('save-msg');
+  if(!name){msg.style.color='#e74c3c';msg.textContent='❌ Ingresa tu nombre';return;}
+  const played=scores.filter(s=>s!==null);
+  if(played.length===0){msg.style.color='#e74c3c';msg.textContent='❌ Sin scores registrados';return;}
+  const total=scores.filter(s=>s!==null).reduce((a,b)=>a+b,0);
+  let parPlayed=0; scores.forEach((s,i)=>{if(s!==null)parPlayed+=holes[i].par;});
+  const firArr=firData.slice();
+  const girArr=girData.slice();
+  const puttsArr=puttsData.slice();
+  const par45=holes.filter(h=>h.par>3);
+  const firMade=par45.filter(h=>firArr[holes.indexOf(h)]===true&&scores[holes.indexOf(h)]!==null).length;
+  const firTotal=par45.filter(h=>scores[holes.indexOf(h)]!==null).length;
+  const girMade=holes.filter((h,i)=>girArr[i]===true&&scores[i]!==null).length;
+  const girTotal=played.length;
+  const totalPutts=puttsArr.filter(p=>p!==null).reduce((a,b)=>a+b,0);
+  const puttsPlayed=puttsArr.filter(p=>p!==null).length;
+
+  const entry={
+    id:Date.now(),
+    name,tee,notes,
+    date:new Date().toLocaleDateString('es-MX',{timeZone:'America/Mexico_City',day:'2-digit',month:'short',year:'numeric'}),
+    scores:[...scores],
+    fir:firArr,gir:girArr,putts:puttsArr,
+    total,diff:total-parPlayed,holesPlayed:played.length,
+    firMade,firTotal,girMade,girTotal,totalPutts,puttsPlayed,
+    players:players.map(p=>({name:p.name,tee:p.tee,color:p.color,scores:[...p.scores]})),
+  };
+  const hist=loadFromLS('delfin_history',[]);
+  hist.unshift(entry);
+  saveToLS('delfin_history',hist);
+  closeModal('modal-save');
+  document.getElementById('save-name').value='';
+  document.getElementById('save-notes').value='';
+  showToast('💾 Ronda guardada correctamente');
+}
+
+function renderHistorial(){
+  const hist=loadFromLS('delfin_history',[]);
+  document.getElementById('hist-count').textContent=hist.length+' ronda'+(hist.length!==1?'s':'');
+  if(hist.length===0){
+    document.getElementById('hist-list').innerHTML=`<div style="text-align:center;padding:40px 20px;"><div style="font-size:2.5rem;margin-bottom:10px">📭</div><div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--txt3)">Sin rondas guardadas aún.<br>Registra tu primera ronda en la pestaña ⛳ Mi Ronda</div></div>`;
+    return;
+  }
+  const teeColors={negro:'#888',azul:'#1e6fa8',blanco:'#ccc',dorado:'#d4a017',rojo:'#c0392b'};
+  document.getElementById('hist-list').innerHTML=hist.map((e,idx)=>{
+    const d=e.diff;
+    const dc=d<0?'var(--green-l)':d===0?'var(--gold)':'var(--red)';
+    const dt=d>0?'+'+d:d===0?'E':d;
+    const tc=teeColors[e.tee]||'#888';
+    const firPct=e.firTotal>0?Math.round(e.firMade/e.firTotal*100):null;
+    const girPct=e.girTotal>0?Math.round(e.girMade/e.girTotal*100):null;
+    return `<div class="hist-entry" onclick="openHistDetail(${idx})">
+      <div class="he-header">
+        <div>
+          <div style="font-size:.8rem;font-weight:600;color:var(--txt)">${e.name}</div>
+          <div class="he-meta">${e.date} · <span style="color:${tc}">■</span> ${e.tee.charAt(0).toUpperCase()+e.tee.slice(1)} · ${e.holesPlayed} hoyos</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="text-align:right;">
+            <div class="he-score">${e.total}</div>
+            <div class="he-diff" style="color:${dc}">${dt}</div>
+          </div>
+          <button class="he-del" onclick="event.stopPropagation();deleteHist(${idx})" title="Eliminar">🗑️</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--txt3);margin-top:4px;">
+        ${firPct!==null?`<span>FIR: <strong style="color:var(--gold)">${firPct}%</strong></span>`:''}
+        ${girPct!==null?`<span>GIR: <strong style="color:var(--gold)">${girPct}%</strong></span>`:''}
+        ${e.puttsPlayed>0?`<span>Putts: <strong style="color:var(--gold)">${e.totalPutts}</strong></span>`:''}
+        ${e.notes?`<span style="color:var(--txt3)">"${e.notes.slice(0,30)}${e.notes.length>30?'...':''}"</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function deleteHist(idx){
+  if(!confirm('¿Eliminar esta ronda del historial?'))return;
+  const hist=loadFromLS('delfin_history',[]);
+  hist.splice(idx,1);
+  saveToLS('delfin_history',hist);
+  renderHistorial();
+  showToast('🗑️ Ronda eliminada');
+}
+
+function openHistDetail(idx){
+  const hist=loadFromLS('delfin_history',[]);
+  const e=hist[idx];
+  if(!e)return;
+  document.getElementById('modal-hist-title').textContent=e.name+' — '+e.date;
+  const teeColors={negro:'#888',azul:'#1e6fa8',blanco:'#ccc',dorado:'#d4a017',rojo:'#c0392b'};
+  const tc=teeColors[e.tee]||'#888';
+  // Golf symbols via CSS: circle=birdie, dbl-circle=eagle, square=bogey, dbl-square=dbl, red-square=trp
+  const cls=(s,par)=>{const d=s-par;return d<=-2?'eagle':d===-1?'birdie':d===0?'par-s':d===1?'bogey':d===2?'dbl':'trp';};
+  const scStyle=(k,bg2='#0f2318')=>{
+    const B=`width:30px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;`;
+    if(k==='eagle') return B+`border-radius:50%;border:2.5px solid #1a8a3a;box-shadow:0 0 0 3px ${bg2},0 0 0 5.5px #1a8a3a;background:rgba(26,138,58,.18);color:#2ecc71;`;
+    if(k==='birdie') return B+`border-radius:50%;border:2.5px solid #27ae60;background:rgba(39,174,96,.15);color:#52d68a;`;
+    if(k==='par-s') return B+`border-radius:3px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#e0e0e0;`;
+    if(k==='bogey') return B+`border-radius:2px;border:2px solid #e67e22;background:rgba(230,126,34,.13);color:#e67e22;`;
+    if(k==='dbl') return B+`border-radius:2px;border:2px solid #c0392b;box-shadow:0 0 0 3px ${bg2},0 0 0 5.5px #c0392b;background:rgba(192,57,43,.15);color:#e74c3c;`;
+    return B+`border-radius:2px;border:2.5px solid #8b0000;background:rgba(139,0,0,.2);color:#c0392b;`;
+  };
+
+  // Header summary
+  let html=`<div style="display:flex;align-items:center;gap:10px;background:var(--surf2);border-radius:12px;padding:10px 12px;margin-bottom:12px;border:1px solid var(--brd);">
+    <div style="text-align:center;min-width:52px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--gold-l);line-height:1">${e.total}</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:${e.diff<0?'var(--green-l)':e.diff===0?'var(--gold)':'var(--red)'}">${e.diff>0?'+'+e.diff:e.diff===0?'E':e.diff}</div>
+    </div>
+    <div style="width:1px;height:36px;background:var(--brd);flex-shrink:0"></div>
+    <div style="font-size:.74rem;color:var(--txt2);line-height:1.7">
+      <strong style="color:${tc}">■</strong> ${e.tee.charAt(0).toUpperCase()+e.tee.slice(1)}<br>
+      ${e.holesPlayed} hoyos · ${e.date}${e.notes?'<br><em style="color:var(--txt3)">"'+e.notes+'"</em>':''}
+    </div>
+  </div>`;
+
+  // Scorecard table - front 9
+  const buildSCSection=(from,to,label,parTotal)=>{
+    let sectionTotal=0; let sectionPar=0;
+    let rows='';
+    for(let i=from;i<to;i++){
+      const h=holes[i]; const s=e.scores[i];
+      const k=s!==null?cls(s,h.par):'';
+      const yds=h[e.tee]||h.negro;
+      if(s!==null){sectionTotal+=s; sectionPar+=h.par;}
+      rows+=`<tr>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--gold);padding:5px 4px;text-align:center;border-bottom:1px solid var(--brd)">H.${h.n}</td>
+        <td style="font-size:.65rem;text-align:center;color:var(--txt3);border-bottom:1px solid var(--brd);padding:5px 4px">${yds}</td>
+        <td style="font-size:.65rem;text-align:center;border-bottom:1px solid var(--brd);padding:5px 4px">${h.par}</td>
+        <td style="text-align:center;border-bottom:1px solid var(--brd);padding:4px 3px">
+          ${s!==null?`<div style="${scStyle(k)}">${s}</div>`:'<div style="width:30px;height:26px;border-radius:6px;background:var(--surf);border:1px dashed var(--brd);display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--txt3)">—</div>'}
+        </td>
+        ${e.putts&&e.putts[i]!=null?`<td style="font-family:'JetBrains Mono',monospace;font-size:.6rem;text-align:center;color:var(--azure);border-bottom:1px solid var(--brd);padding:5px 4px">${e.putts[i]}</td>`:'<td style="border-bottom:1px solid var(--brd);padding:5px 4px;text-align:center;font-size:.6rem;color:var(--txt3)">—</td>'}
+      </tr>`;
+    }
+    const subtotalDiff=sectionTotal>0?sectionTotal-sectionPar:null;
+    rows+=`<tr style="background:var(--surf2)">
+      <td colspan="2" style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--gold);padding:5px 6px;text-align:left">${label}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:.6rem;text-align:center;padding:5px 4px;color:var(--txt2)">${parTotal}</td>
+      <td style="text-align:center;padding:5px 4px">
+        ${sectionTotal>0?`<div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--gold-l)">${sectionTotal}</div><div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;color:${subtotalDiff<0?'var(--green-l)':subtotalDiff===0?'var(--gold)':'var(--red)'}">${subtotalDiff>0?'+'+subtotalDiff:subtotalDiff===0?'E':subtotalDiff}</div>`:'—'}
+      </td>
+      <td style="padding:5px 4px;text-align:center"></td>
+    </tr>`;
+    return rows;
+  };
+
+  const hasPutts=e.putts&&e.putts.some(p=>p!=null);
+  html+=`<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--brd);margin-bottom:12px;">
+    <table style="width:100%;border-collapse:collapse;min-width:240px;">
+      <thead><tr style="background:var(--surf2)">
+        <th style="font-family:'JetBrains Mono',monospace;font-size:.48rem;color:var(--txt3);text-transform:uppercase;padding:6px 4px;text-align:center;">Hoyo</th>
+        <th style="font-family:'JetBrains Mono',monospace;font-size:.48rem;color:var(--txt3);text-transform:uppercase;padding:6px 4px;text-align:center;">Yds</th>
+        <th style="font-family:'JetBrains Mono',monospace;font-size:.48rem;color:var(--txt3);text-transform:uppercase;padding:6px 4px;text-align:center;">Par</th>
+        <th style="font-family:'JetBrains Mono',monospace;font-size:.48rem;color:var(--txt3);text-transform:uppercase;padding:6px 4px;text-align:center;">Score</th>
+        <th style="font-family:'JetBrains Mono',monospace;font-size:.48rem;color:var(--azure);text-transform:uppercase;padding:6px 4px;text-align:center;">Putts</th>
+      </tr></thead>
+      <tbody>
+        ${buildSCSection(0,9,'OUT · H.1–9',37)}
+        ${buildSCSection(9,18,'IN · H.10–18',35)}
+        <tr style="background:rgba(201,168,76,.08)">
+          <td colspan="2" style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--gold-l);padding:7px 8px;font-weight:700">TOTAL</td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:.6rem;text-align:center;padding:7px 4px;color:var(--txt2)">72</td>
+          <td style="text-align:center;padding:7px 4px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:700;color:var(--gold-l)">${e.total}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.52rem;color:${e.diff<0?'var(--green-l)':e.diff===0?'var(--gold)':'var(--red)'}">${e.diff>0?'+'+e.diff:e.diff===0?'E':e.diff}</div>
+          </td>
+          <td style="text-align:center;padding:7px 4px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--azure)">${e.puttsPlayed>0?e.totalPutts:'—'}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>`;
+
+  // Stats bar
+  if(e.firTotal>0||e.girTotal>0||e.puttsPlayed>0){
+    html+=`<div style="background:var(--surf);border-radius:10px;padding:11px 12px;border:1px solid var(--brd);">`;
+    if(e.firTotal>0){const pct=Math.round(e.firMade/e.firTotal*100);html+=`<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:.68rem;color:var(--txt2);margin-bottom:3px"><span>Fairways en Regulación</span><span style="color:var(--gold);font-family:'JetBrains Mono',monospace">${e.firMade}/${e.firTotal} · ${pct}%</span></div><div style="background:var(--surf2);border-radius:99px;height:5px"><div style="height:5px;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--green-l));width:${pct}%"></div></div></div>`;}
+    if(e.girTotal>0){const pct=Math.round(e.girMade/e.girTotal*100);html+=`<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:.68rem;color:var(--txt2);margin-bottom:3px"><span>Greens en Regulación</span><span style="color:var(--gold);font-family:'JetBrains Mono',monospace">${e.girMade}/${e.girTotal} · ${pct}%</span></div><div style="background:var(--surf2);border-radius:99px;height:5px"><div style="height:5px;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--green-l));width:${pct}%"></div></div></div>`;}
+    if(e.puttsPlayed>0)html+=`<div style="font-size:.68rem;color:var(--txt2)">Putts totales: <strong style="color:var(--azure)">${e.totalPutts}</strong> · Promedio: <strong style="color:var(--azure)">${(e.totalPutts/e.puttsPlayed).toFixed(1)}/hoyo</strong></div>`;
+    html+=`</div>`;
+  }
+
+  // Legend
+  html+=`<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center;background:var(--surf2);border-radius:10px;padding:8px 10px;">
+    <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:#2ecc71"><div style="width:13px;height:13px;border-radius:50%;border:2px solid #1a8a3a;box-shadow:0 0 0 2px #0f2318,0 0 0 4px #1a8a3a;"></div>Eagle</div>
+    <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:#52d68a"><div style="width:13px;height:13px;border-radius:50%;border:2px solid #27ae60;"></div>Birdie</div>
+    <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--txt3)"><div style="width:13px;height:13px;border-radius:3px;border:1px solid rgba(255,255,255,.2);"></div>Par</div>
+    <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:#e67e22"><div style="width:13px;height:13px;border-radius:2px;border:2px solid #e67e22;"></div>Bogey</div>
+    <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:#e74c3c"><div style="width:13px;height:13px;border-radius:2px;border:2px solid #c0392b;box-shadow:0 0 0 2px #0f2318,0 0 0 4px #c0392b;"></div>Doble</div>
+    <div style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:#c0392b"><div style="width:13px;height:13px;border-radius:2px;border:2px solid #8b0000;"></div>Triple+</div>
+  </div>`;
+
+  document.getElementById('modal-hist-body').innerHTML=html;
+  document.getElementById('modal-hist').classList.add('open');
+}
+
+/* ════════════════════════════════════════════════
+   PLAYERS
+════════════════════════════════════════════════ */
+function renderPlayers(){
+  const pl=document.getElementById('players-list');
+  if(players.length===0){pl.innerHTML='';return;}
+  const teeColors={negro:'#888',azul:'#1e6fa8',blanco:'#ccc',dorado:'#d4a017',rojo:'#c0392b'};
+  pl.innerHTML=players.map((p,pi)=>{
+    const tot=p.scores.filter(s=>s!==null).reduce((a,b)=>a+b,0);
+    const played=p.scores.filter(s=>s!==null).length;
+    const isActive=activePlayer===pi;
+    const scHtml=p.scores.map((s,si)=>{
+      if(s===null)return`<div class="pc-sc em">·</div>`;
+      const d=s-holes[si].par;
+      const cls=d<=-2?'e':d===-1?'b':d===0?'p':d===1?'bg':d===2?'db':'tp';
+      return`<div class="pc-sc ${cls}" title="H.${holes[si].n}">${s}</div>`;
+    }).join('');
+    return`<div class="player-card${isActive?' selected':''}" onclick="switchToPlayer(${pi})">
+      <div class="pc-header">
+        <div class="pc-avatar" style="background:${p.color}22;color:${p.color};border:2px solid ${isActive?p.color:p.color+'40'}">${p.name.charAt(0).toUpperCase()}</div>
+        <div style="flex:1">
+          <div class="pc-name">${p.name} ${isActive?'<span style="font-family:JetBrains Mono,monospace;font-size:.48rem;background:'+p.color+';color:#0b1a10;padding:1px 6px;border-radius:99px;margin-left:4px;vertical-align:middle">ANOTANDO</span>':''}</div>
+          <div class="pc-tee"><span style="color:${teeColors[p.tee]||'#888'}">■</span> ${p.tee.charAt(0).toUpperCase()+p.tee.slice(1)} · <span style="color:var(--txt3)">Toca para anotar</span></div>
+        </div>
+        ${played>0?`<div style="text-align:right"><div class="pc-total" style="color:${p.color}">${tot}</div><div style="font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--txt3)">${played}h</div></div>`:''}
+        <button onclick="event.stopPropagation();removePlayer(${pi})" style="background:transparent;border:none;color:var(--txt3);cursor:pointer;font-size:.8rem;padding:4px 8px;border-radius:6px" title="Quitar">✕</button>
+      </div>
+      <div class="pc-scores">${scHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+function switchToPlayer(pi){
+  if(activePlayer===pi){switchToMyCard();return;}
+  activePlayer=pi;
+  const p=players[pi];
+  // Load player scores into scorecard
+  scores=p.scores;
+  firData=p.fir||new Array(18).fill(null);
+  girData=p.gir||new Array(18).fill(null);
+  puttsData=p.putts||new Array(18).fill(null);
+  buildScorecard();
+  updateBar();
+  // Show active bar
+  const bar=document.getElementById('active-player-bar');
+  bar.style.display='flex';
+  document.getElementById('apb-dot').style.background=p.color;
+  document.getElementById('apb-name').textContent='Anotando para: '+p.name;
+  document.getElementById('active-player-bar').style.borderColor=p.color+'55';
+  renderPlayers();
+  showToast('⛳ Anotando para '+p.name);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function switchToMyCard(){
+  // Save current scores back to active player if any
+  if(activePlayer!==null){
+    players[activePlayer].scores=[...scores];
+    players[activePlayer].fir=[...firData];
+    players[activePlayer].gir=[...girData];
+    players[activePlayer].putts=[...puttsData];
+  }
+  // Restore my own data
+  activePlayer=null;
+  scores=myScores;
+  firData=myFir;
+  girData=myGir;
+  puttsData=myPutts;
+  buildScorecard();
+  updateBar();
+  document.getElementById('active-player-bar').style.display='none';
+  renderPlayers();
+  showToast('⛳ Volviste a tu tarjeta');
+}
+
+function openAddPlayer(){
+  document.getElementById('modal-player').classList.add('open');
+}
+
+function addPlayer(){
+  const name=document.getElementById('player-name').value.trim();
+  const tee=document.getElementById('player-tee').value;
+  const color=document.getElementById('player-color').value;
+  if(!name){showToast('⚠️ Ingresa un nombre');return;}
+  players.push({name,tee,color,scores:new Array(18).fill(null)});
+  document.getElementById('player-name').value='';
+  closeModal('modal-player');
+  renderPlayers();
+  showToast(`✅ ${name} agregado`);
+}
+
+function removePlayer(idx){
+  players.splice(idx,1);
+  renderPlayers();
+}
+
+function updatePlayers(holeIdx){
+  // Sync main score to all players? No — players have independent scores.
+  // Just re-render.
+  renderPlayers();
+}
+
+/* ════════════════════════════════════════════════
+   HOLE VIEW (HOYOS TAB)
+════════════════════════════════════════════════ */
+function buildHoleNav(){
+  const nav=document.getElementById('hole-nav-btns');
+  nav.innerHTML=holes.map((h,i)=>`<button class="h-btn${i===0?' act':''}" id="hbtn-${i}" onclick="renderHoleView(${i})">${h.n}</button>`).join('');
+}
+
+function renderHoleView(i){
+  document.querySelectorAll('.h-btn').forEach(b=>b.classList.remove('act'));
+  const btn=document.getElementById('hbtn-'+i);
+  if(btn)btn.classList.add('act');
+  const h=holes[i];
+  const teeRows=Object.entries(teeData).map(([k,t])=>`<tr><td style="color:${k==='negro'?'#bbb':t.color};font-size:.7rem">■ ${t.label}</td><td style="font-family:'JetBrains Mono',monospace;font-size:.68rem">${h[k]} yds</td></tr>`).join('');
+  document.getElementById('hole-view-content').innerHTML=`
+    <div class="card" style="padding:12px">
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1">H.${h.n}</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--txt3)">Par ${h.par} · S.I. ${h.si}</div>
+        </div>
+        <div style="flex:1">${buildHoleSVG(h,180,240)}</div>
+      </div>
+      <div style="margin-bottom:10px">${h.hz.map(hz=>`<span class="hz-chip" style="background:${hz.c}22;border-color:${hz.c}66;color:${hz.c}"><span style="width:7px;height:7px;border-radius:50%;background:${hz.c};display:inline-block;flex-shrink:0"></span>${hz.t}</span>`).join('')}</div>
+      <p style="font-size:.77rem;color:var(--txt2);line-height:1.6;margin-bottom:12px">${h.info}</p>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:12px">${teeRows}</table>
+      <div class="sec-label">Consejos Técnicos</div>
+      <div class="hcp-tabs" style="margin-bottom:8px">
+        <button class="hcp-tab" onclick="setHoleViewHcp('scratch',this,${i})">🏆 Scratch</button>
+        <button class="hcp-tab act" onclick="setHoleViewHcp('mid',this,${i})" id="hvtab-mid">⛳ Medio</button>
+        <button class="hcp-tab" onclick="setHoleViewHcp('high',this,${i})">🌱 Alto</button>
+      </div>
+      <div class="hcp-text" id="hv-hcp">${h.hcp.mid}</div>
+    </div>
+  `;
+}
+
+function setHoleViewHcp(level,btn,holeIdx){
+  document.querySelectorAll('#hole-view-content .hcp-tab').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  document.getElementById('hv-hcp').textContent=holes[holeIdx].hcp[level];
+}
+
+/* ════════════════════════════════════════════════
+   HOLE SVG
+════════════════════════════════════════════════ */
+function buildHoleSVG(h,W,H){
+  const fc='#1a5a28',lc='#4CAF74',BK='#d4b896';
+  let fw='';
+  if(h.r==='dogleg-left')fw=`<polygon points="${W/2-18},${H-18} ${W/2+32},${H-18} ${W/2+20},${H/2} ${W/2-38},${H/2} ${W/2-50},22 ${W/2-4},22" fill="${fc}"/>`;
+  else if(h.r==='dogleg-right')fw=`<polygon points="${W/2+18},${H-18} ${W/2-32},${H-18} ${W/2-20},${H/2} ${W/2+38},${H/2} ${W/2+50},22 ${W/2+4},22" fill="${fc}"/>`;
+  else if(h.r==='slight-left')fw=`<polygon points="${W/2+22},${H-18} ${W/2-44},${H-18} ${W/2-32},22 ${W/2+32},22" fill="${fc}"/>`;
+  else if(h.r==='slight-right')fw=`<polygon points="${W/2-22},${H-18} ${W/2+44},${H-18} ${W/2+32},22 ${W/2-32},22" fill="${fc}"/>`;
+  else fw=`<rect x="${W/2-34}" y="24" width="68" height="${H-46}" rx="5" fill="${fc}"/>`;
+  const pc=h.par===3?'#1a4a7a':h.par===5?'#5a4010':'#1a4a28';
+  const wx=h.ws==='right'?W-42:42,wy=H*.52+8;
+  const wEl=h.water?`<ellipse cx="${wx}" cy="${wy}" rx="28" ry="16" fill="#0d3a70" opacity=".9"/><ellipse cx="${wx}" cy="${wy}" rx="24" ry="13" fill="#1a5fa8" opacity=".8"/>${h.casc?`<ellipse cx="${wx}" cy="${wy-14}" rx="11" ry="7" fill="#6abce8" opacity=".75"/>`:''}
+<text x="${wx}" y="${wy+4}" text-anchor="middle" font-size="6.5" fill="#90d0f8" font-family="monospace">${h.casc?'LAGO+':'LAGO'}</text>`:'';
+  const bfEl=h.bF?`<ellipse cx="${h.r==='dogleg-left'?W/2-44:W/2+44}" cy="${H*.62}" rx="16" ry="10" fill="${BK}" opacity=".88"/><text x="${h.r==='dogleg-left'?W/2-44:W/2+44}" y="${H*.62+4}" text-anchor="middle" font-size="5.5" fill="#5a3010" font-family="monospace">BKR</text>`:'';
+  const bgEl=h.bG?`<ellipse cx="${W/2-34}" cy="44" rx="13" ry="7" fill="${BK}" opacity=".9"/><text x="${W/2-34}" y="47" text-anchor="middle" font-size="4.5" fill="#5a3010" font-family="monospace">BKR</text><ellipse cx="${W/2+34}" cy="44" rx="13" ry="7" fill="${BK}" opacity=".9"/><text x="${W/2+34}" y="47" text-anchor="middle" font-size="4.5" fill="#5a3010" font-family="monospace">BKR</text>`:'';
+  const sp=(h.n===6||h.n===15)?`<text x="${W-4}" y="${H-4}" text-anchor="end" font-size="5.5" fill="#90d0f8" font-family="monospace">💨BAHÍA</text>`:(h.n===12?`<text x="${W-4}" y="${H-4}" text-anchor="end" font-size="5.5" fill="#6abce8" font-family="monospace">💧CASC.</text>`:'');
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="background:#040f07;border-radius:8px;width:100%;max-width:${W}px">
+<rect width="${W}" height="${H}" fill="#040f07"/>
+${fw}${wEl}${bfEl}
+<ellipse cx="${W/2}" cy="34" rx="30" ry="16" fill="#0f5c28"/>
+<ellipse cx="${W/2}" cy="34" rx="30" ry="16" fill="none" stroke="${lc}" stroke-width="1.2"/>
+<line x1="${W/2}" y1="34" x2="${W/2}" y2="22" stroke="#c9a84c" stroke-width="1"/>
+<polygon points="${W/2},22 ${W/2+7},26 ${W/2},30" fill="#c0392b"/>
+<text x="${W/2}" y="37" text-anchor="middle" font-size="5.5" fill="#4CAF74" font-family="monospace" font-weight="700">GREEN</text>
+${bgEl}
+<circle cx="${W/2}" cy="${H-15}" r="7" fill="#c9a84c"/>
+<text x="${W/2}" y="${H-11}" text-anchor="middle" font-size="5" fill="#0b1a10" font-family="monospace" font-weight="700">TEE</text>
+<rect x="${W/2+2}" y="${H/2-6}" width="36" height="12" rx="3" fill="rgba(0,0,0,.55)"/>
+<text x="${W/2+20}" y="${H/2+3}" text-anchor="middle" font-size="8" fill="rgba(201,168,76,.9)" font-family="monospace" font-weight="700">${h.negro}y</text>
+<rect x="2" y="2" width="26" height="15" rx="3" fill="rgba(0,0,0,.7)" stroke="#c9a84c" stroke-width=".6"/>
+<text x="15" y="13" text-anchor="middle" font-size="8" fill="#c9a84c" font-family="monospace" font-weight="700">${h.n}</text>
+<rect x="${W-30}" y="2" width="28" height="15" rx="3" fill="${pc}"/>
+<text x="${W-16}" y="13" text-anchor="middle" font-size="7.5" fill="#fff" font-family="monospace" font-weight="700">P${h.par}</text>
+${sp}</svg>`;
+}
+
+/* ════════════════════════════════════════════════
+   CLUBS
+════════════════════════════════════════════════ */
+function buildClubsList(){
+  const saved=loadFromLS('delfin_clubs',{});
+  const el=document.getElementById('clubs-list');
+  el.innerHTML=clubsData.map(cl=>`
+    <div style="display:grid;grid-template-columns:1fr 62px 62px 70px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--brd);transition:background .2s;" onmouseover="this.style.background='var(--surf2)'" onmouseout="this.style.background=''">
+      <div style="font-size:.8rem;font-weight:600">${cl.name}</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--azure);text-align:center">${cl.pga>0?cl.pga+'y':'—'}</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--green-l);text-align:center">${cl.amateur>0?cl.amateur+'y':'—'}</div>
+      <div style="text-align:center"><input style="width:60px;background:var(--inp-bg);border:1px solid var(--brd);border-radius:7px;padding:5px 6px;color:var(--txt);font-size:.74rem;font-family:'JetBrains Mono',monospace;text-align:center;outline:none;" type="number" min="0" max="400" placeholder="0 yds" id="club-${cl.id}" value="${saved[cl.id]||''}" inputmode="numeric"></div>
+    </div>
+  `).join('');
+  buildClubsTips();
+}
+
+function onClubChange(id){}
+
+function buildClubsTips(){
+  const el=document.getElementById('clubs-tips-content');
+  el.innerHTML=clubsData.map(c=>`
+    <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--brd);">
+      <div style="font-weight:600;font-size:.8rem;color:var(--gold-l);margin-bottom:4px;">${c.name}</div>
+      <p>${c.tip}</p>
+    </div>
+  `).join('');
+}
+
+function saveClubs(){
+  const data={};
+  clubsData.forEach(c=>{
+    const el=document.getElementById('club-'+c.id);
+    if(el&&el.value) data[c.id]=parseInt(el.value);
+  });
+  saveToLS('delfin_clubs',data);
+  showToast('💾 Yardajes guardados');
+}
+
+/* ════════════════════════════════════════════════
+   GAMES
+════════════════════════════════════════════════ */
+function buildGames(){
+  document.getElementById('games-list').innerHTML=gamesData.map((g,i)=>`
+    <div class="game-card">
+      <div class="game-header" onclick="toggleGame(${i})">
+        <div>
+          <div class="game-title">${g.title}</div>
+          <div class="game-players">${g.players}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="game-badge">${g.badge}</span>
+          <span id="game-arrow-${i}" style="color:var(--gold);font-size:.8rem;transition:transform .2s">▼</span>
+        </div>
+      </div>
+      <div class="game-body" id="game-body-${i}">${g.body}</div>
+    </div>
+  `).join('');
+}
+
+function toggleGame(i){
+  const body=document.getElementById('game-body-'+i);
+  const arrow=document.getElementById('game-arrow-'+i);
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open');
+  arrow.style.transform=isOpen?'':'rotate(180deg)';
+}
+
+/* ════════════════════════════════════════════════
+   RULES
+════════════════════════════════════════════════ */
+function buildRules(){
+  document.getElementById('rules-list').innerHTML=rulesData.map(r=>`
+    <div class="rule-item">
+      <div class="rule-num">${r.n}</div>
+      <div class="rule-title">${r.title}</div>
+      <div class="rule-body">${r.body}</div>
+    </div>
+  `).join('');
+}
+
+/* ════════════════════════════════════════════════
+   HANDICAP
+════════════════════════════════════════════════ */
+function calcHcp(){
+  const sc=parseInt(document.getElementById('hcp-score').value);
+  const tee=document.getElementById('hcp-tee').value;
+  const rounds=parseInt(document.getElementById('hcp-rounds').value);
+  if(!sc||sc<60||sc>160){showToast('⚠️ Score válido: 60–160');return;}
+  const td=teeData[tee];
+  const diff=((sc-td.rating)*113/td.slope);
+  const mult={1:1.0,3:1.0,5:0.6,10:0.5,20:0.5}[rounds]||0.96;
+  const hi=(diff*mult).toFixed(1);
+  const ch=Math.round(hi*td.slope/113+(td.rating-72));
+  const note=hi<=8?'Jugador de élite. Busca subpar en hoyos 7, 10 y 18.':hi<=18?'Jugador medio. Con course handicap recibirás golpes en los hoyos de mayor S.I.':'Jugador alto. Recibirás golpes en casi todos los hoyos.';
+  const res=document.getElementById('hcp-result');
+  res.style.display='block';
+  res.innerHTML=`<strong style="color:var(--gold-l);font-size:1rem">Índice: ${hi}</strong><br>Course Handicap en El Delfín (${td.label}): <strong style="color:var(--gold)">${ch}</strong><br><span style="font-size:.72rem">${note}</span>`;
+}
+
+/* ════════════════════════════════════════════════
+   MODALS
+════════════════════════════════════════════════ */
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+/* ════════════════════════════════════════════════
+   THEME & TOAST
+════════════════════════════════════════════════ */
+function toggleTheme(){
+  isDark=!isDark;
+  document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
+  document.querySelector('[onclick="toggleTheme()"]').textContent=isDark?'🌙':'☀️';
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function showMsg(el,msg,color){
+  el.style.display='block';
+  el.style.color=color;
+  el.textContent=msg;
+}
+
+/* ════════════════════════════════════════════════
+   CHRONOMETER
+════════════════════════════════════════════════ */
+let chronoInterval=null, chronoStart=null, chronoElapsed=0, chronoRunning=false;
+function chronoToggle(){
+  const btn=document.getElementById('chrono-start');
+  const box=document.getElementById('chrono-box');
+  if(chronoRunning){
+    clearInterval(chronoInterval);
+    chronoElapsed+=Date.now()-chronoStart;
+    chronoRunning=false;
+    btn.textContent='▶';
+    box.classList.remove('chrono-running');
+  } else {
+    chronoStart=Date.now();
+    chronoRunning=true;
+    btn.textContent='⏸';
+    box.classList.add('chrono-running');
+    chronoInterval=setInterval(()=>{
+      const total=chronoElapsed+(Date.now()-chronoStart);
+      const h=Math.floor(total/3600000);
+      const m=Math.floor((total%3600000)/60000);
+      const s=Math.floor((total%60000)/1000);
+      document.getElementById('chrono-time').textContent=
+        String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    },1000);
+  }
+}
+function chronoReset(){
+  if(chronoRunning){clearInterval(chronoInterval);chronoRunning=false;}
+  chronoElapsed=0; chronoStart=null;
+  document.getElementById('chrono-time').textContent='00:00:00';
+  document.getElementById('chrono-start').textContent='▶';
+  document.getElementById('chrono-box').classList.remove('chrono-running');
+}
+
+/* ════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════ */
+buildScorecard();
+buildClubsList();
+buildGames();
+buildRules();
+</script>
+</body>
+</html>
